@@ -10,28 +10,162 @@
   <body class="outline-divs">
     <div id="masthead" class="row masthead">
       <div class="columns small-12">
+        <a id="facet-parent" class="button parent active" href="#">[parent]</a>
+        <a id="facet-parent2" class="button parent active" href="#">[parent]</a>
+        <a id="facet-parent3" class="button parent active" href="#">[parent]</a>
 
-        <a class="button parent active" href="#">[parent]</a>
-        <a class="button parent active" href="#">[parent]</a>
-        <a class="float-right button" href="#"><img class="hexagon" src="assets/logos/hexagon-mono-black.svg" /></a>
+        <a class="button research what hide" href="/?facet-what=Research&facet-active=what">Research</a>
+        <a class="button emblorg where hide" href="/?facet-where=EMBL.org&facet-active=where">EMBL.org</a>
+        <a class="button people who hide" href="/?facet-who=People&facet-active=who">People</a>
+
+        <a class="float-right button" href="http://localhost:3000/?facet-where=EMBL.org&facet-active=where">
+          <img class="hexagon" src="assets/logos/hexagon-mono-black.svg" />
+        </a>
       </div>
     </div>
 
     <div id="local-masthead" class="row local-masthead">
-      Local mastheadda
-
+      <div class="columns">
+        <h1 id="facet-active" class="">Local masthead</h1>
+      </div>
+      <!-- <div class="columns">
+        Section menu
+      </div> -->
     </div>
 
     <div id="content" class="row content">
+      <div class="columns medium-8">
 
-      <h2>Content</h2>
+        <!-- where:EMBL.org -->
+        <div class="emblorg hide">
+          <h2>About this</h2>
+          <p>This page does not demonstrate design or general layout, but focuses on <strong>cross-silo</strong> navigation.</p>
+          <p>That is, we show how it could feel to navigate not ⬆️⬇️ up-and-down a silo, but ⬅️➡️ across silos...
+            <ul>
+              <li>Research ➡️ Services
+              <li>People:Grenoble ➡️ People:Hinxton
+              <li>and so on.
+            </ul>
+          </p>
+          <div>
+            <h3>⬇️ Descend into a silo to try</h3>
+            <p>Note: these are major facets for testing major navigation paths from EMBL.org, we'd of course present these better/differently. <span class="strikethrough">strikethrough</span> options aren't implemented.</p>
+            <div class=" medium-up-3 ">
+              <div class="column">
+                <span class="label">⬇️ Who</span><br/>
+                <a href="/?facet-who=Groups&facet-where=EMBL.org&facet-active=who&facet-parent=where" class="">Groups</a>
+                <a href="/?facet-who=People&facet-where=EMBL.org&facet-active=who&facet-parent=where" class="">People</a>
+              </div>
+              <div class="column">
+                <span class="label">⬇️ What</span><br/>
+                <a href="/?facet-what=research&facet-where=EMBL.org&facet-active=what&facet-parent=where" class="">Research</a>
+                <a href="#" class=" strikethrough">Services</a>
+                <a href="#" class=" strikethrough">Training</a>
+                <a href="#" class=" strikethrough">Technology Transfer</a>
+                <a href="#" class=" strikethrough">Inspiration</a>
+                <a href="#" class=" strikethrough">About</a>
+                <a href="#" class=" strikethrough">News</a>
+              </div>
+              <div class="column">
+                <span class="label">⬇️ Where</span><br/>
+                <a href="#" class=" strikethrough">Heidelberg</a>
+                <a href="#" class=" strikethrough">Barcelona</a>
+                <a href="/?facet-where=Grenoble&facet-active=where" class="">Grenoble</a>
+                <a href="#" class=" strikethrough">Hamburg</a>
+                <a href="#" class=" strikethrough">Hinxton</a>
+                <a href="#" class=" strikethrough">Rome</a>
+              </div>
+            </div>
+          </div>
+          <p></p>
+          <p class="padding-top-xlarge clear">As this is contextual cross-silo navigation, it will not often appear in the main body content, but rather in the global header and footer navigation structures.</p>
+        </div>
+
+
+        <!-- what:Research -->
+        <div class="research hide">
+          <h2>EMBL: super-duper for Research</h2>
+          <p>Some text about research at EMBL.</p>
+
+          <p>
+            <span class="label">⬇️ Connect to a Research team, area, or person</span>
+            <br/>
+            <a href="http://localhost:3000/?facet-who=Cipriani Team&facet-what=research&facet-parent=what&facet-active=who" class="">Ciprian Team</a>
+            <a href="#" class=" strikethrough">Team X</a>
+            <a href="#" class=" strikethrough">Team X</a>
+            <a href="#" class=" strikethrough">Team X</a>
+            <a href="#" class=" strikethrough">Team X</a>
+            <a href="#" class=" strikethrough">Team X</a>
+          </p>
+
+
+        </div>
+
+        <!-- what:Research where:Grenoble-->
+        <div class="research grenoble hide">
+          <h2>Welcome to Reseach at Grenoble</h2>
+          <p>Some text about research at EMBL Grenoble.</p>
+
+          <p>
+            <span class="label">⬇️ Connect to a Research team, area, or person</span>
+            <br/>
+            <a href="http://localhost:3000/?facet-who=Cipriani Team&facet-what=research&facet-parent=what&facet-active=who" class="">Ciprian Team</a>
+          </p>
+        </div>
+
+        <!-- who:Cipriani Team -->
+        <div class="ciprianiteam hide">
+          <div>
+            <a href="#" class="button">Members</a>
+            <a href="#" class="button">Publications</a>
+            <a href="#" class="button">Collaborations</a>
+            <a href="#" class="button">Contact</a>
+            <a href="#" class="button">Collaborative Projects</a>
+            <a href="#" class="button">Group Homepage</a>
+          </div>
+          <h2>About the team</h2>
+          <p>From the live site: The Cipriani team develops instruments and methods for structural biology research and works with industry to make them available to scientists worldwide.</p>
+
+          <h3>Previous and current research</h3>
+
+          <p>The core activity of our team is to develop instruments and methods for X-ray scattering experiments. The CrystalDirect™ harvester jointly developed with the Márquez team is now in routine use at the High Throughput Crystallisation lab: associated to a FlexED3 cryo-storage unit (Figure 1): crystals grown in CrystalDirect™ plates can be marked remotely using a web service and automatically mounted onto Spine pins. The machine is particularly suitable for harvesting micro-crystals, fragile crystals, as well as batches of micro-crystals. With a capacity of three pucks, the system performs up to 30 harvestings in less than 45 minutes.</p>
+
+          <p>...</p>
+
+        </div>
+
+        <div class="">
+
+          <div class="callout">
+            <h6><strong><span class="badge size-100">ℹ︎</span> Meta-tags for this view</strong></h6>
+            <p>The current thinking is that it would be driven by meta-tags; the tags that would be used on this current view are:</p>
+            <pre class="metatag-readout">
+              Generating tags...
+            </pre>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="columns medium-4">
+        <h3>Sidebar</h3>
+        <p>Beacuse most of our pages have a sidebar on the left or right -- ofcourse, we could try and do away with that..</p>
+      </div>
 
 
     </div>
 
+    <div id="local-footer" class="row local-footer">
+      <div class="columns">
+        <p></p>
+        <p>Some footer or such</p>
+        <p></p>
+      </div>
+    </div>
+
     <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/what-input/dist/what-input.js"></script>
-    <script src="bower_components/foundation-sites/dist/js/foundation.js"></script>
+    <!-- <script src="bower_components/what-input/dist/what-input.js"></script> -->
+    <!-- <script src="bower_components/foundation-sites/dist/js/foundation.js"></script> -->
     <script src="js/app.js"></script>
   </body>
 </html>

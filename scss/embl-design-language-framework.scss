@@ -426,12 +426,16 @@ a.more {
 // Nav stuff
 .inline-block { display: inline-block; }
 
+h1 {
+  text-transform: capitalize;
+}
 .masthead {
   .button {
     background: none;
     color: #222;
     display: inline-block;
     height: 2rem;
+    text-transform: capitalize;
   }
   a.button:hover {
     border-bottom: 1px dotted #888;
@@ -444,6 +448,17 @@ a.more {
 
 .content {
   padding-top: 1rem;
+
+  a {
+    border-bottom: 1px dotted #888;
+    &:hover {
+      border-bottom: none;
+    }
+  }
+}
+
+.clear {
+  clear: both;
 }
 
 // outline layout divs
@@ -452,4 +467,20 @@ a.more {
   &.columns {
     box-shadow: -1px 1px 0 #AAA, 1px 0 0 #AAA;
   }
+}
+
+.metatag-readout {
+  background: #EEE;
+  font-size: .8rem;
+}
+
+.strikethrough {
+  opacity: .5;
+}
+.strikethrough {
+  text-decoration: line-through;
+}
+
+@for $i from 0 through 20 {
+  .size-#{$i*25} { font-size: 25%*$i; }
 }
