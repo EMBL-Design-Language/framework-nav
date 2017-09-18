@@ -6,17 +6,53 @@
 //
 // This might pone day be some sort of lookup API that maps a value to our IA
 var facetIndex = {
-  'groups':'who',
-  'people':'who',
-  'ciprianiteam':'who',
+  'grenoble': {
+    'type':'where',
+    'parent':'locations',
+    'title':'Grenoble'
+  },
+  'heidelberg': {
+    'type':'where',
+    'parent':'locations',
+    'title':'Heidelberg'
+  },
+  'emblorg': {
+    'type':'where',
+    'parent':'locations',
+    'title':'EMBL.org'
+  },
 
-  'administration':'what',
-  'news':'what',
-  'research':'what',
+  'groups': {
+    'type':'who',
+    'parent':'emblorg',
+    'title':'Groups'
+  },
+  'people': {
+    'type':'who',
+    'parent':'emblorg',
+    'title':'People'
+  },
+  'ciprianiteam': {
+    'type':'who',
+    'parent':'groups',
+    'title':'Cipriani Team'
+  },
 
-  'EMBL.org':'where',
-  'grenoble':'where',
-  'heidelberg':'where'
+  'administration': {
+    'type':'what',
+    'parent':'emblorg',
+    'title':'Administration'
+  },
+  'news': {
+    'type':'what',
+    'parent':'emblorg',
+    'title':'News'
+  },
+  'research': {
+    'type':'what',
+    'parent':'emblorg',
+    'title':'Research'
+  }
 }
 
 // we'll use this later to store what we've scanned from the URL or metatags
@@ -118,9 +154,9 @@ function loadMetatagsIntoContent() {
   var tempParent1 = cleanString(facetsPresent['parent-1'] || 'x');
   var tempParent2 = cleanString(facetsPresent['parent-2'] || 'x');
 
-  $('#masthead #nav .'+tempActive).removeClass('hide');
-  $('#masthead #nav .'+tempParent1).removeClass('hide');
-  $('#masthead #nav .'+tempParent2).removeClass('hide');
+  $('#masthead #nav .'+tempActive).removeClass('hide').append(' <small>(you are here)</small>');
+  $('#masthead #nav .'+tempParent1).removeClass('hide').prepend('⬆️ ');
+  $('#masthead #nav .'+tempParent2).removeClass('hide').prepend('⬆️ ');
 
   $('h1#facet-active').html(facetsPresent.active);
   $('title').html(facetsPresent.active);
@@ -132,16 +168,16 @@ function loadMetatagsIntoContent() {
  */
 function toggleContent() {
   // prefer the highest level of specificity
-  if ($('#content .'+facetsPresent.active+'.'+facetsPresent['parent-1']+'.'+facetsPresent['parent-2']).length > 0) {
-    $('#content .'+facetsPresent.active+'.'+facetsPresent['parent-1']+'.'+facetsPresent['parent-2']).first().removeClass('hide');
+  if ($('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']+'.'+facetsPresent['parent-2']).length > 0) {
+    $('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']+'.'+facetsPresent['parent-2']).first().removeClass('hide');
     return true;
   }
-  if ($('#content .'+facetsPresent.active+'.'+facetsPresent['parent-1']).length > 0) {
-    $('#content .'+facetsPresent.active+'.'+facetsPresent['parent-1']).first().removeClass('hide');
+  if ($('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']).length > 0) {
+    $('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']).first().removeClass('hide');
     return true;
   }
-  if ($('#content .'+facetsPresent.active).length > 0) {
-    $('#content .'+facetsPresent.active).first().removeClass('hide');
+  if ($('#content .'+cleanString(facetsPresent.active)).length > 0) {
+    $('#content .'+cleanString(facetsPresent.active)).first().removeClass('hide');
     return true;
   }
 
@@ -160,7 +196,7 @@ function runPage() {
 
   // build the default nav
   $.each(facetIndex, function( index, value ) {
-    $('#masthead #nav').prepend('<a class="button '+value+' '+cleanString(index)+' hide" href="/?facet-active='+cleanString(index)+'">'+index+'</a>');
+    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="/?facet-active='+cleanString(index)+'">'+value.title+'</a>');
   });
 
   emblTagsRead();
