@@ -1,23 +1,43 @@
-// notes
-// - Child relationship not yet implement -- they may not be relevant
-// - wildcard (*) not yet implemented -- needs more thought
+// IA index
+// A simple array index of key=>type.
+//
+// See master list of values at
+// https://embl-design-language.github.io/Springboard/information-architecture/
+//
+// This might pone day be some sort of lookup API that maps a value to our IA
+var facetIndex = {
+  'groups':'who',
+  'people':'who',
+  'ciprianiteam':'who',
+
+  'administration':'what',
+  'news':'what',
+  'research':'what',
+
+  'EMBL.org':'where',
+  'grenoble':'where',
+  'heidelberg':'where'
+}
+
+// we'll use this later to store what we've scanned from the URL or metatags
+var facetsPresent = {};
 
 /**
  * Get URL paramater
  * We'll use this to synthesise a website with one page
  *
  * The meta tag syntax we synthesise is in the format of:
- *   <meta name="embl:facet-who"   content="child"   data-tag="*" />
- *   <meta name="embl:facet-what"  content="primary" data-tag="Research" />
- *   <meta name="embl:facet-where" content="parent"  data-tag="EMBL.org" />
+ *   <meta name="embl:facet-active"  content="[A research team]" />
+ *   <meta name="embl:facet-parent-1" content="Research" />
+ *   <meta name="embl:facet-parent-2" content="EMBL.org" />
  *
  * We fabricate as
  * - EMBL.org homepage
-     http://localhost:3000/?facet-where=EMBL.org&facet-active=where
- * - Research at Grenoble
-     http://localhost:3000/?facet-what=research&facet-where=Grenoble&facet-active=what&facet-parent=where
- * - Cipriani Team. Research at Grenoble
-     http://localhost:3000/?facet-who=Cipriani Team&facet-what=research&facet-where=Grenoble&facet-parent=where&facet-parent2=what&facet-active=who
+     http://localhost:3000/?facet-active=EMBL.org
+ * - Research:Grenoble
+     http://localhost:3000/?facet-active=Research&facet-parent-1=Grenoble
+ * - Cipriani Team:Research:Grenoble
+     http://localhost:3000/?facet-active=Cipriani Team&facet-parent-1=Research&facet-parent-2=EMBL.org
  *
  * Related discussion at https://github.com/EMBL-Design-Language/Sprint-2/issues/11
  *
@@ -40,23 +60,28 @@ function getParameterByName(name, url) {
  * This will also write the tags to the <head>
  */
 function getContentTag(facet) {
-  facet = facet.split('-')[1];
-  if (getParameterByName('facet-active') == facet) {
-    return 'active';
-  }
-  if (getParameterByName('facet-parent') == facet) {
-    return 'parent';
-  }
-  // allow for multipe parents
-  if (getParameterByName('facet-parent2') == facet) {
-    return 'parent';
-  }
-  if (getParameterByName('facet-parent3') == facet) {
-    return 'parent';
-  }
-  if (getParameterByName('facet-child') == facet) {
-    return 'child';
-  }
+  // facet = facet.split('-')[1];
+  // if (getParameterByName('facet-active') == facet) {
+  //   return 'active';
+  // }
+  // if (getParameterByName('facet-parent') == facet) {
+  //   return 'parent';
+  // }
+  // // allow for multipe parents
+  // if (getParameterByName('facet-parent2') == facet) {
+  //   return 'parent';
+  // }
+  // if (getParameterByName('facet-parent3') == facet) {
+  //   return 'parent';
+  // }
+  // if (getParameterByName('facet-child') == facet) {
+  //   return 'child';
+  // }
+}
+
+// toLowerCase and drop '.', ' '
+function cleanString(val) {
+  return val.replace(/\./g,'').replace(/ /g,'').toLowerCase();
 }
 
 /**
@@ -64,32 +89,22 @@ function getContentTag(facet) {
  * You just need a div with class 'metatag-readout'
  * This will also write the tags to the <head>
  */
-function updateMetaTagReadout() {
+function emblTagsRead() {
 
   var target = $('.metatag-readout');
   target.html('');
 
-  var processing = '';
 
-  processing = 'facet-who';
-  target.append('&lt;meta name="embl:'+processing+'" content="'+getContentTag(processing)+'" data-tag="'+getParameterByName(processing)+'" /&gt; <br/>');
-  $('head').prepend('<meta name="embl:'+processing+'" content="'+getContentTag(processing)+'" data-tag="'+getParameterByName(processing)+'">')
+  function readTag(processing) {
+    facetsPresent[processing] = getParameterByName('facet-'+processing);
+    target.append('&lt;meta name="embl:'+processing+'" content="'+facetsPresent[processing]+'" /&gt; <br/>');
+    $('head').prepend('<meta name="embl:'+processing+'" content="'+facetsPresent[processing]+'">')
+  }
 
-  processing = 'facet-what';
-  target.append('&lt;meta name="embl:'+processing+'" content="'+getContentTag(processing)+'" data-tag="'+getParameterByName(processing)+'" /&gt; <br/>');
-  $('head').prepend('<meta name="embl:'+processing+'" content="'+getContentTag(processing)+'" data-tag="'+getParameterByName(processing)+'">')
+  readTag('active');
+  readTag('parent-1');
+  readTag('parent-2');
 
-  processing = 'facet-where';
-  target.append('&lt;meta name="embl:'+processing+'" content="'+getContentTag(processing)+'" data-tag="'+getParameterByName(processing)+'" /&gt; <br/>');
-  $('head').prepend('<meta name="embl:'+processing+'" content="'+getContentTag(processing)+'" data-tag="'+getParameterByName(processing)+'">')
-}
-
-function debugUrlTags() {
-  console.log('current url is: ',window.location.href);
-  console.log('facet-active is: ',getParameterByName('facet-active'));
-  console.log('facet-who is: ',getParameterByName('facet-who'));
-  console.log('facet-what is: ',getParameterByName('facet-what'));
-  console.log('facet-where is: ',getParameterByName('facet-where'));
 }
 
 /**
@@ -99,37 +114,16 @@ function debugUrlTags() {
  * written with JS
  */
 function loadMetatagsIntoContent() {
-  var facet = new Array();
-  facet['active'] = getParameterByName('facet-active') || 'null';
-  facet['parent'] = getParameterByName('facet-parent') || 'null';
-  facet['parent2'] = getParameterByName('facet-parent2') || 'null';
-  facet['parent3'] = getParameterByName('facet-parent3') || 'null';
+  var tempActive = cleanString(facetsPresent.active || 'x');
+  var tempParent1 = cleanString(facetsPresent['parent-1'] || 'x');
+  var tempParent2 = cleanString(facetsPresent['parent-2'] || 'x');
 
-  if (facet['active'] != 'null') {
-    $('h1#facet-active').html(getParameterByName('facet-'+facet['active']));
-    $('title').html(getParameterByName('facet-'+facet['active']));
-  }
+  $('#masthead #nav .'+tempActive).removeClass('hide');
+  $('#masthead #nav .'+tempParent1).removeClass('hide');
+  $('#masthead #nav .'+tempParent2).removeClass('hide');
 
-  // global masthead nav
-
-  if (facet['parent'] != 'null') {
-    var link='"/?facet-active='+facet['parent']+'&facet-'+facet['parent']+'='+getParameterByName('facet-'+facet['parent'])+'"';
-    $('#facet-parent').html('<a href='+link+'>'+getParameterByName('facet-'+facet['parent'])+'</a>');
-  } else {
-    $('#facet-parent').hide();
-  }
-  if (facet['parent2'] != 'null') {
-    var link='"/?facet-active='+facet['parent2']+'&facet-'+facet['parent2']+'='+getParameterByName('facet-'+facet['parent2'])+'"';
-    $('#facet-parent2').html(getParameterByName('facet-'+facet['parent2']));
-  } else {
-    $('#facet-parent2').hide();
-  }
-  if (facet['parent3'] != 'null') {
-    var link='"/?facet-active='+facet['parent3']+'&facet-'+facet['parent3']+'='+getParameterByName('facet-'+facet['parent3'])+'"';
-    $('#facet-parent3').html(getParameterByName('facet-'+facet['parent3']));
-  } else {
-    $('#facet-parent3').hide();
-  }
+  $('h1#facet-active').html(facetsPresent.active);
+  $('title').html(facetsPresent.active);
 
 }
 
@@ -137,41 +131,22 @@ function loadMetatagsIntoContent() {
  * As we don't have real pages, we show and hide content depending on the active facet
  */
 function toggleContent() {
-  var facet = new Array();
-  facet['active'] = getParameterByName('facet-active') || '';
-  facet['active'] = getParameterByName('facet-'+facet['active']).replace(/\./g,'').replace(/ /g,'').toLowerCase();
-  facet['parent'] = getParameterByName('facet-parent') || false;
-  if (facet['parent']) facet['parent'] = '.'+getParameterByName('facet-'+facet['parent']).replace(/\./g,'').replace(/ /g,'').toLowerCase();
-  facet['parent2'] = getParameterByName('facet-parent2') || false;
-  if (facet['parent2']) facet['parent2'] = '.'+getParameterByName('facet-'+facet['parent2']).replace(/\./g,'').replace(/ /g,'').toLowerCase();
-  facet['parent3'] = getParameterByName('facet-parent3') || false;
-  if (facet['parent3']) facet['parent3'] = '.'+getParameterByName('facet-'+facet['parent3']).replace(/\./g,'').replace(/ /g,'').toLowerCase();
+  // prefer the highest level of specificity
+  if ($('#content .'+facetsPresent.active+'.'+facetsPresent['parent-1']+'.'+facetsPresent['parent-2']).length > 0) {
+    $('#content .'+facetsPresent.active+'.'+facetsPresent['parent-1']+'.'+facetsPresent['parent-2']).first().removeClass('hide');
+    return true;
+  }
+  if ($('#content .'+facetsPresent.active+'.'+facetsPresent['parent-1']).length > 0) {
+    $('#content .'+facetsPresent.active+'.'+facetsPresent['parent-1']).first().removeClass('hide');
+    return true;
+  }
+  if ($('#content .'+facetsPresent.active).length > 0) {
+    $('#content .'+facetsPresent.active).first().removeClass('hide');
+    return true;
+  }
 
-  // console.log(facet);
-  console.log('will show:', '#content .'+facet['active']+facet['parent']+facet['parent2']+facet['parent3'])
-
-  // prefer the highest leve of specificity
-  if ($('#content .'+facet['active']+facet['parent']+facet['parent2']+facet['parent3']).length > 0) {
-    $('#content .'+facet['active']+facet['parent']+facet['parent2']+facet['parent3']).first().removeClass('hide');
-    $('#masthead .button.'+facet['active']+facet['parent']+facet['parent2']+facet['parent3']).first().removeClass('hide');
-    return true;
-  }
-  if ($('#content .'+facet['active']+facet['parent']+facet['parent2']).length > 0) {
-    $('#content .'+facet['active']+facet['parent']+facet['parent2']).first().removeClass('hide');
-    $('#masthead .button.'+facet['active']+facet['parent']+facet['parent2']).first().removeClass('hide');
-    return true;
-  }
-  if ($('#content .'+facet['active']+facet['parent']).length > 0) {
-    $('#content .'+facet['active']+facet['parent']).first().removeClass('hide');
-    $('#masthead .button.'+facet['active']+facet['parent']).first().removeClass('hide');
-    return true;
-  }
-  if ($('#content .'+facet['active']).length > 0) {
-    $('#content .'+facet['active']).first().removeClass('hide');
-    $('#masthead .button.'+facet['active']).first().removeClass('hide');
-    // $('#masthead .button.'+facet['active']).attr('href','?');
-    return true;
-  }
+  // still here? load the generic content
+  $('#content .generic').removeClass('hide');
 
 }
 
@@ -183,8 +158,12 @@ function runPage() {
   // Invoke generic foundation JS
   // $(document).foundation();
 
-  // debugUrlTags();
-  updateMetaTagReadout();
+  // build the default nav
+  $.each(facetIndex, function( index, value ) {
+    $('#masthead #nav').prepend('<a class="button '+value+' '+cleanString(index)+' hide" href="/?facet-active='+cleanString(index)+'">'+index+'</a>');
+  });
+
+  emblTagsRead();
   loadMetatagsIntoContent();
   toggleContent();
 }

@@ -9,16 +9,16 @@
   </head>
   <body class="outline-divs">
     <div id="masthead" class="row masthead">
-      <div class="columns small-12">
-        <a id="facet-parent" class="button parent active" href="#">[parent]</a>
+      <div id="nav" class="columns small-12">
+        <!-- <a id="facet-parent" class="button parent active" href="#">[parent]</a>
         <a id="facet-parent2" class="button parent active" href="#">[parent]</a>
         <a id="facet-parent3" class="button parent active" href="#">[parent]</a>
 
         <a class="button research what hide" href="/?facet-what=Research&facet-active=what">Research</a>
         <a class="button emblorg where hide" href="/?facet-where=EMBL.org&facet-active=where">EMBL.org</a>
-        <a class="button people who hide" href="/?facet-who=People&facet-active=who">People</a>
+        <a class="button people who hide" href="/?facet-who=People&facet-active=who">People</a> -->
 
-        <a class="float-right button" href="http://localhost:3000/?facet-where=EMBL.org&facet-active=where">
+        <a class="float-right button" href="/?facet-active=EMBL.org">
           <img class="hexagon" src="assets/logos/hexagon-mono-black.svg" />
         </a>
       </div>
@@ -53,12 +53,12 @@
             <div class=" medium-up-3 ">
               <div class="column">
                 <span class="label">⬇️ Who</span><br/>
-                <a href="/?facet-who=Groups&facet-where=EMBL.org&facet-active=who&facet-parent=where" class="">Groups</a>
-                <a href="/?facet-who=People&facet-where=EMBL.org&facet-active=who&facet-parent=where" class="">People</a>
+                <a href="/?facet-active=Groups&facet-parent-1=EMBL.org" class="">Groups</a>
+                <a href="/?facet-active=People&facet-parent-1=EMBL.org" class="">People</a>
               </div>
               <div class="column">
                 <span class="label">⬇️ What</span><br/>
-                <a href="/?facet-what=research&facet-where=EMBL.org&facet-active=what&facet-parent=where" class="">Research</a>
+                <a href="/?facet-active=Research&facet-parent-1=EMBL.org" class="">Research</a>
                 <a href="#" class=" strikethrough">Services</a>
                 <a href="#" class=" strikethrough">Training</a>
                 <a href="#" class=" strikethrough">Technology Transfer</a>
@@ -70,7 +70,7 @@
                 <span class="label">⬇️ Where</span><br/>
                 <a href="#" class=" strikethrough">Heidelberg</a>
                 <a href="#" class=" strikethrough">Barcelona</a>
-                <a href="/?facet-where=Grenoble&facet-active=where" class="">Grenoble</a>
+                <a href="/?facet-active=Grenoble&facet-parent-1=EMBL.org" class="">Grenoble</a>
                 <a href="#" class=" strikethrough">Hamburg</a>
                 <a href="#" class=" strikethrough">Hinxton</a>
                 <a href="#" class=" strikethrough">Rome</a>
@@ -131,6 +131,14 @@
           <p>The core activity of our team is to develop instruments and methods for X-ray scattering experiments. The CrystalDirect™ harvester jointly developed with the Márquez team is now in routine use at the High Throughput Crystallisation lab: associated to a FlexED3 cryo-storage unit (Figure 1): crystals grown in CrystalDirect™ plates can be marked remotely using a web service and automatically mounted onto Spine pins. The machine is particularly suitable for harvesting micro-crystals, fragile crystals, as well as batches of micro-crystals. With a capacity of three pucks, the system performs up to 30 harvestings in less than 45 minutes.</p>
 
           <p>...</p>
+
+        </div>
+
+        <!-- who:Cipriani Team -->
+        <div class="generic hide">
+
+          <h2>🤔</h2>
+          <p>No content yet prepared for this facet combination. Remember this is juat a thin-skin prototype, the "real" version will be driven off content and not a flaky JS read of the URL bar.</p>
 
         </div>
 
