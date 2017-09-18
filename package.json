@@ -1,0 +1,29 @@
+{
+  "name": "framework-nav",
+  "version": "1.0.0",
+  "description": "Illustrate poteintal cross-silo navigation patterns.",
+  "main": "gulpfile.js",
+  "devDependencies": {
+    "browser-sync": "^2.18.13",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-sass": "^2.3.2",
+    "node-sass": "^4.5.3"
+  },
+  "scripts": {
+    "start": "gulp",
+    "build": "gulp sass"
+  },
+  "repository": "https://github.com/EMBL-Design-Language/framework-nav.git",
+  "bugs": {
+    "url": "https://github.com/EMBL-Design-Language/framework-nav/issues",
+    "email": "khawkins@ebi.ac.uk"
+  },
+  "author": "Ken Hawkins <khawkins@ebi.ac.uk>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "gulp-autoprefixer": "^3.1.0"
+  }
+}

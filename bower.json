@@ -1,0 +1,23 @@
+{
+  "name": "framework-nav",
+  "version": "1.0.0",
+  "authors": [
+    "Ken Hawkins <khawkins@ebi.ac.uk>"
+  ],
+  "description": "Illustrate poteintal cross-silo navigation patterns.",
+  "main": "index.html",
+  "license": "MIT",
+  "homepage": "https://github.com/EMBL-Design-Language/Sprint-2/issues/11",
+  "dependencies": {
+    "foundation-sites": "~6.4.0",
+    "motion-ui": "~1.2.3"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "private": true
+}

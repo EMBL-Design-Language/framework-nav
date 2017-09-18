@@ -1,0 +1,455 @@
+@charset 'utf-8';
+
+@import 'https://code.cdn.mozilla.net/fonts/fira.css';
+
+@import 'settings';
+@import 'foundation';
+@import 'motion-ui';
+
+@include foundation-global-styles;
+@include foundation-grid;
+// @include foundation-flex-grid;
+// @include foundation-xy-grid-classes;
+@include foundation-typography;
+@include foundation-button;
+@include foundation-forms;
+// @include foundation-range-input;
+@include foundation-accordion;
+@include foundation-accordion-menu;
+@include foundation-badge;
+@include foundation-breadcrumbs;
+@include foundation-button-group;
+@include foundation-callout;
+@include foundation-card;
+@include foundation-close-button;
+@include foundation-menu;
+@include foundation-menu-icon;
+@include foundation-drilldown-menu;
+@include foundation-dropdown;
+@include foundation-dropdown-menu;
+@include foundation-responsive-embed;
+@include foundation-label;
+@include foundation-media-object;
+@include foundation-off-canvas;
+@include foundation-orbit;
+@include foundation-pagination;
+@include foundation-progress-bar;
+// @include foundation-progress-element;
+// @include foundation-progress-element;
+// @include foundation-meter-element;
+@include foundation-slider;
+@include foundation-sticky;
+@include foundation-reveal;
+@include foundation-switch;
+@include foundation-table;
+@include foundation-tabs;
+@include foundation-thumbnail;
+@include foundation-title-bar;
+@include foundation-tooltip;
+@include foundation-top-bar;
+@include foundation-visibility-classes;
+// @include foundation-float-classes;
+@include foundation-flex-classes;
+
+// @include foundation-prototype-classes;
+
+@include motion-ui-transitions;
+@include motion-ui-animations;
+
+// Graft in parts of tufte.css
+// This may or may not stick, if it does, move it to its own file
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+p.subtitle {
+    font-style: italic;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    display: block;
+    line-height: 1;
+}
+
+.numeral {
+    font-family: et-book-roman-old-style;
+}
+
+/* Chapter Epigraphs */
+div.epigraph {
+    margin: 5em 0;
+}
+
+div.epigraph > blockquote {
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+
+div.epigraph > blockquote, div.epigraph > blockquote > p {
+    font-style: italic;
+}
+
+div.epigraph > blockquote > footer {
+    font-style: normal;
+}
+
+div.epigraph > blockquote > footer > cite {
+    font-style: italic;
+}
+
+/* end chapter epigraphs styles */
+blockquote {
+    // font-size: 1.4rem;
+}
+
+blockquote p {
+    // width: 55%;
+    // margin-right: 40px;
+}
+
+blockquote footer {
+    // width: 55%;
+    font-size: 1.1rem;
+    text-align: right;
+}
+
+section>ol, section>ul {
+    width: 45%;
+    -webkit-padding-start: 5%;
+    -webkit-padding-end: 5%;
+}
+
+figure {
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    // max-width: 55%;
+    -webkit-margin-start: 0;
+    -webkit-margin-end: 0;
+    margin: 0 0 3em 0;
+}
+
+figcaption {
+    float: right;
+    clear: right;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    vertical-align: baseline;
+    position: relative;
+    max-width: 40%;
+}
+
+figure.fullwidth figcaption {
+    margin-right: 24%;
+}
+
+/* Links: replicate underline that clears descenders */
+.main-content-area a:link,
+.main-content-area a:visited {
+    color: inherit;
+}
+
+.main-content-area a:link {
+    text-decoration: none;
+    background: -webkit-linear-gradient(#ffffff, #ffffff), -webkit-linear-gradient(#ffffff, #ffffff), -webkit-linear-gradient(#333, #333);
+    background: linear-gradient(#ffffff, #ffffff), linear-gradient(#ffffff, #ffffff), linear-gradient(#333, #333);
+    -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    -moz-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    background-repeat: no-repeat, no-repeat, repeat-x;
+    text-shadow: 0.03em 0 #ffffff, -0.03em 0 #ffffff, 0 0.03em #ffffff, 0 -0.03em #ffffff, 0.06em 0 #ffffff, -0.06em 0 #ffffff, 0.09em 0 #ffffff, -0.09em 0 #ffffff, 0.12em 0 #ffffff, -0.12em 0 #ffffff, 0.15em 0 #ffffff, -0.15em 0 #ffffff;
+    background-position: 0% 93%, 100% 93%, 0% 93%;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .main-content-area a:link {
+        background-position-y: 87%, 87%, 87%;
+    }
+}
+
+.main-content-area a:link::selection {
+    text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
+    background: #b4d5fe;
+}
+
+.main-content-area a:link::-moz-selection {
+    text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
+    background: #b4d5fe;
+}
+
+/* Sidenotes, margin notes, figures, captions */
+.sidenote, .marginnote {
+    float: right;
+    clear: right;
+    margin-right: -60%;
+    width: 50%;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    vertical-align: baseline;
+    position: relative;
+}
+
+.sidenote-number {
+    counter-increment: sidenote-counter;
+}
+
+.sidenote-number:after, .sidenote:before {
+    content: counter(sidenote-counter) " ";
+    font-family: et-book-roman-old-style;
+    position: relative;
+    vertical-align: baseline;
+}
+
+.sidenote-number:after {
+    content: counter(sidenote-counter);
+    font-size: 1rem;
+    top: -0.5rem;
+    left: 0.1rem;
+}
+
+.sidenote:before {
+    content: counter(sidenote-counter) " ";
+    top: -0.5rem;
+}
+
+blockquote .sidenote, blockquote .marginnote {
+    margin-right: -82%;
+    min-width: 59%;
+    text-align: left;
+}
+
+p, footer, table {
+    // width: 55%;
+}
+
+div.fullwidth, table.fullwidth {
+    width: 100%;
+}
+
+div.table-wrapper {
+    overflow-x: auto;
+    font-family: "Trebuchet MS", "Gill Sans", "Gill Sans MT", sans-serif;
+}
+
+span.newthought {
+    font-variant: small-caps;
+    font-size: 1.2em;
+}
+
+input.margin-toggle {
+    display: none;
+}
+
+label.sidenote-number {
+    display: inline;
+}
+
+label.margin-toggle:not(.sidenote-number) {
+    display: none;
+}
+
+@media (max-width: 760px) {
+    ul {
+        width: 85%;
+    }
+
+    figure {
+        max-width: 90%;
+    }
+
+    figcaption, figure.fullwidth figcaption {
+        margin-right: 0%;
+        max-width: none;
+    }
+
+    blockquote {
+        margin-left: 1.5em;
+        margin-right: 0em;
+    }
+
+    blockquote p, blockquote footer {
+        width: 100%;
+    }
+
+    label.margin-toggle:not(.sidenote-number) {
+        display: inline;
+    }
+
+    .sidenote, .marginnote {
+        display: none;
+    }
+
+    .margin-toggle:checked + .sidenote, .margin-toggle:checked + .marginnote {
+        display: block;
+        float: left;
+        left: 1rem;
+        clear: both;
+        width: 95%;
+        margin: 1rem 2.5%;
+        vertical-align: baseline;
+        position: relative;
+    }
+
+    label {
+        cursor: pointer;
+    }
+
+    div.table-wrapper, table {
+        width: 85%;
+    }
+
+    img {
+        width: 100%;
+    }
+}
+
+// Some useful spacing and misc from EBI Visual Framework
+/* intro unit */
+.intro-unit {
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+  h2 { font-size: 3rem; margin-bottom: 0; }
+  h3 { padding-bottom: 1rem; }
+  .lead { color: $secondary-color; margin-bottom: .5rem; }
+}
+
+/* read more */
+a.read-more,
+a.readmore,
+a.more {
+  white-space: nowrap;
+  &:after {
+    content: " >";
+    font-family: "EBI-Functional";
+    font-size: .85em;
+  }
+}
+
+/* custom spacing */
+.margin-top-none { margin-top: 0; }
+.margin-top-xsmall { margin-top: .1rem; }
+.margin-top-small { margin-top: .25rem; }
+.margin-top-medium { margin-top: .5rem; }
+.margin-top-large { margin-top: 1rem; }
+.margin-top-xlarge { margin-top: 2rem; }
+
+.margin-left-none { margin-left: 0; }
+.margin-left-xsmall { margin-left: .1rem; }
+.margin-left-small { margin-left: .25rem; }
+.margin-left-medium { margin-left: .5rem; }
+.margin-left-large { margin-left: 1rem; }
+.margin-left-xlarge { margin-left: 2rem; }
+
+.margin-right-none { margin-right: 0; }
+.margin-right-xsmall { margin-right: .1rem; }
+.margin-right-small { margin-right: .25rem; }
+.margin-right-medium { margin-right: .5rem; }
+.margin-right-large { margin-right: 1rem; }
+.margin-right-xlarge { margin-right: 2rem; }
+
+.margin-bottom-none { margin-bottom: 0; }
+.margin-bottom-xsmall { margin-bottom: .1rem; }
+.margin-bottom-small { margin-bottom: .25rem; }
+.margin-bottom-medium { margin-bottom: .5rem; }
+.margin-bottom-large { margin-bottom: 1rem; }
+.margin-bottom-xlarge { margin-bottom: 2rem; }
+
+.padding-top-none { padding-top: 0; }
+.padding-top-xsmall { padding-top: .1rem; }
+.padding-top-small { padding-top: .25rem; }
+.padding-top-medium { padding-top: .5rem; }
+.padding-top-large { padding-top: 1rem; }
+.padding-top-xlarge { padding-top: 2rem; }
+
+.padding-left-none { padding-left: 0; }
+.padding-left-xsmall { padding-left: .1rem; }
+.padding-left-small { padding-left: .25rem; }
+.padding-left-medium { padding-left: .5rem; }
+.padding-left-large { padding-left: 1rem; }
+.padding-left-xlarge { padding-left: 2rem; }
+
+.padding-right-none { padding-right: 0; }
+.padding-right-xsmall { padding-right: .1rem; }
+.padding-right-small { padding-right: .25rem; }
+.padding-right-medium { padding-right: .5rem; }
+.padding-right-large { padding-right: 1rem; }
+.padding-right-xlarge { padding-right: 2rem; }
+
+.padding-bottom-none { padding-bottom: 0; }
+.padding-bottom-xsmall { padding-bottom: .1rem; }
+.padding-bottom-small { padding-bottom: .25rem; }
+.padding-bottom-medium { padding-bottom: .5rem; }
+.padding-bottom-large { padding-bottom: 1rem; }
+.padding-bottom-xlarge { padding-bottom: 2rem; }
+
+.float-right { float: right; }
+.float-left { float: left; }
+
+// Custom stuff for EMBL Visual Language Framework
+// h1.intro { font-size: 6rem; }
+
+// $light-gray: #e6e6e6;
+// $medium-gray: #cacaca;
+// $dark-gray: #8a8a8a;
+// $black: #0a0a0a;
+// $white: #fefefe;
+
+
+.white-color {
+  @at-root .label#{&}, .button#{&}, a#{&}, a:hover#{&}, &, & cite, & a, & a:hover, & a:visited, & h3, & h4 {
+    color: $white;
+  }
+}
+.medium-gray-color {
+  @at-root .label#{&}, .button#{&}, a#{&}, a:hover#{&}, &, & cite, & a, & a:hover, & a:visited, & h3, & h4 {
+    color: $medium-gray;
+  }
+}
+.black-background {
+  @at-root a#{&}, &, &.button, &.button:hover, &.tag { background: $black; }
+}
+.medium-gray-background {
+  @at-root a#{&}, &, &.button, &.button:hover, &.tag { background: $medium-gray; }
+}
+
+// Nav stuff
+.inline-block { display: inline-block; }
+
+.masthead {
+  .button {
+    background: none;
+    color: #222;
+    display: inline-block;
+    height: 2rem;
+  }
+  a.button:hover {
+    border-bottom: 1px dotted #888;
+  }
+  .hexagon {
+    height: 2rem;
+    margin-top: -.5rem;
+  }
+}
+
+.content {
+  padding-top: 1rem;
+}
+
+// outline layout divs
+.outline-divs div {
+  &.row,
+  &.columns {
+    box-shadow: -1px 1px 0 #AAA, 1px 0 0 #AAA;
+  }
+}
