@@ -87,11 +87,11 @@ var facetsPresent = {};
  *
  * We fabricate as
  * - EMBL.org homepage
-     http://localhost:3000/?facet-active=EMBL.org
+     http://localhost:3000?facet-active=EMBL.org
  * - Research:Grenoble
-     http://localhost:3000/?facet-active=Research&facet-parent-1=Grenoble
+     http://localhost:3000?facet-active=Research&facet-parent-1=Grenoble
  * - Cipriani Team:Research:Grenoble
-     http://localhost:3000/?facet-active=Cipriani Team&facet-parent-1=Research&facet-parent-2=EMBL.org
+     http://localhost:3000?facet-active=Cipriani Team&facet-parent-1=Research&facet-parent-2=EMBL.org
  *
  * Related discussion at https://github.com/EMBL-Design-Language/Sprint-2/issues/11
  *
@@ -295,13 +295,13 @@ function runPage() {
 
   // build the default nav
   $.each(facetIndex.who, function( index, value ) {
-    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="/?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
+    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
   });
   $.each(facetIndex.what, function( index, value ) {
-    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="/?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
+    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
   });
   $.each(facetIndex.where, function( index, value ) {
-    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="/?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
+    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
   });
 
   emblTagsRead();
