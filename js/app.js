@@ -5,54 +5,72 @@
 // https://embl-design-language.github.io/Springboard/information-architecture/
 //
 // This might pone day be some sort of lookup API that maps a value to our IA
+// TODO: add a lookup by key function
 var facetIndex = {
-  'grenoble': {
-    'type':'where',
-    'parent':'locations',
-    'title':'Grenoble'
+  'who': {
+    'ciprianiteam': {
+      'type':'who',
+      'parent':'who:groups',
+      'title':'Cipriani Team'
+    },
+    'groups': {
+      'type':'who',
+      'parent':'where:emblorg',
+      'title':'Groups',
+      'records':
+      // ideally we'd want to use a 3rd level for sub-items
+      // but i've not yet done that as it adds a good bit of complexity
+      // to an idea that's in flux
+      {
+        'ciprianiteam': {
+          'type':'who',
+          'parent':'who:groups',
+          'title':'Cipriani Team'
+        }
+      }
+    },
+    'people': {
+      'type':'who',
+      'parent':'where:emblorg',
+      'title':'People'
+    },
   },
-  'heidelberg': {
-    'type':'where',
-    'parent':'locations',
-    'title':'Heidelberg'
-  },
-  'emblorg': {
-    'type':'where',
-    'parent':'locations',
-    'title':'EMBL.org'
-  },
+  'where':{
+    'grenoble': {
+      'type':'where',
+      'parent':'locations',
+      'title':'Grenoble'
+    },
+    'heidelberg': {
+      'type':'where',
+      'parent':'locations',
+      'title':'Heidelberg'
+    },
+    'emblorg': {
+      'type':'where',
+      'parent':'locations',
+      'title':'EMBL.org'
+    }
 
-  'groups': {
-    'type':'who',
-    'parent':'emblorg',
-    'title':'Groups'
   },
-  'people': {
-    'type':'who',
-    'parent':'emblorg',
-    'title':'People'
-  },
-  'ciprianiteam': {
-    'type':'who',
-    'parent':'groups',
-    'title':'Cipriani Team'
-  },
-
-  'administration': {
-    'type':'what',
-    'parent':'emblorg',
-    'title':'Administration'
-  },
-  'news': {
-    'type':'what',
-    'parent':'emblorg',
-    'title':'News'
-  },
-  'research': {
-    'type':'what',
-    'parent':'emblorg',
-    'title':'Research'
+  'what': {
+    'administration': {
+      'type':'what',
+      'parent':'emblorg',
+      'title':'Administration'
+    },
+    'news': {
+      'type':'what',
+      'parent':'emblorg',
+      'title':'News'
+    },
+    'research': {
+      'type':'what',
+      'parent':'emblorg',
+      'title':'Research'
+    }
   }
+
 }
 
 // we'll use this later to store what we've scanned from the URL or metatags
@@ -117,6 +135,7 @@ function getContentTag(facet) {
 
 // toLowerCase and drop '.', ' '
 function cleanString(val) {
+  val = val || 'null:null';
   return val.replace(/\./g,'').replace(/ /g,'').toLowerCase();
 }
 
@@ -130,12 +149,15 @@ function emblTagsRead() {
   var target = $('.metatag-readout');
   target.html('');
 
-
   function readTag(processing) {
-    facetsPresent[processing] = getParameterByName('facet-'+processing) || '';
-    facetsPresent[processing] = facetsPresent[processing].toLowerCase();
-    target.append('&lt;meta name="embl:'+processing+'" content="'+facetsPresent[processing]+'" /&gt; <br/>');
-    $('head').prepend('<meta name="embl:'+processing+'" content="'+facetsPresent[processing]+'">')
+    facetsPresent[processing] = cleanString(getParameterByName('facet-'+processing))|| '';
+    if (facetsPresent[processing] == 'null:null' && processing == 'active') {
+      facetsPresent[processing] = 'where:emblorg'; // there should always be an active facet, fallback to embl.org
+    }
+    if (facetsPresent[processing] != 'null:null') {
+      target.append('&lt;meta name="embl:'+processing+'" content="'+facetsPresent[processing]+'" /&gt; <br/>');
+      $('head').prepend('<meta name="embl:'+processing+'" content="'+facetsPresent[processing]+'">')
+    }
   }
 
   readTag('active');
@@ -151,34 +173,71 @@ function emblTagsRead() {
  * written with JS
  */
 function emblTagsNavigation() {
-  var tempActive = cleanString(facetsPresent.active || 'null');
-  var tempParent1 = cleanString(facetsPresent['parent-1'] || 'null');
-  var tempParent2 = cleanString(facetsPresent['parent-2'] || 'null');
+  var tempActive =  (facetsPresent.active || 'null:null').split(':');
+  var tempParent1 = (facetsPresent['parent-1'] || 'null:null').split(':');
+  var tempParent2 = (facetsPresent['parent-2'] || 'null:null').split(':');
 
-  $('h1#facet-active').html(facetIndex[tempActive].title);
-  $('title').html(facetIndex[tempActive].title);
+  // console.log(facetIndex[tempActive[0]][tempActive[1]]);
 
-  $('#masthead #nav a.'+tempActive).removeClass('hide').append(' <small>(you are here)</small>');
-  $('#masthead #nav a.'+tempParent1).removeClass('hide').prepend('⬆️ ');
-  $('#masthead #nav a.'+tempParent2).removeClass('hide').prepend('⬆️ ');
+  $('h1#facet-active').html(facetIndex[tempActive[0]][tempActive[1]].title);
+  $('title').html(facetIndex[tempActive[0]][tempActive[1]].title);
 
-  // amend parents to inherit eachother
-  if ((tempParent1 != 'emblorg') && (tempParent1 != 'null')) {
-    var tempHref = $('#masthead #nav a.'+tempParent2).attr('href') + '&facet-parent-1=' + tempParent1;
-    $('#masthead #nav a.'+tempParent2).attr('href',tempHref);
-    $('title').append(' > ' + facetIndex[tempParent1].title);
+  if (tempParent1[1] != 'null') {
+    // $('<small> < ' + facetIndex[tempParent1[0]][tempParent1[1]].title+'</small>').appendTo($('title'));
+    $('h1#facet-active').append('<small> < ' + facetIndex[tempParent1[0]][tempParent1[1]].title + '</small>');
   }
-  if ((tempParent2 != 'emblorg') && (tempParent2 != 'null')){
-    var tempHref = $('#masthead #nav a.'+tempParent1).attr('href') + '&facet-parent-1=' + tempParent2;
-    $('#masthead #nav a.'+tempParent1).attr('href',tempHref);
-    $('title').append(' > ' + facetIndex[tempParent2].title);
+  if (tempParent2[1] != 'null') {
+    // $('<small> < ' + facetIndex[tempParent1[0]][tempParent1[1]].title+'</small>').appendTo($('title'));
+    $('h1#facet-active').append('<small> < ' + facetIndex[tempParent2[0]][tempParent2[1]].title + '</small>');
   }
 
-  // activate the default navigation and make it relative to parent-1 and parent-2
+  if (tempParent1[1] != 'null' || tempParent2[1] != 'null') {
+    $('#masthead #nav a.'+tempActive[1]).removeClass('hide').addClass('strong').prepend('⬆️ ');
+  } else {
+    $('#masthead #nav a.'+tempActive[1]).removeClass('hide').addClass('strong').append(' <small>(you are here)</small>');
+  }
+
+  $('#masthead #nav a.'+tempParent1[1]).removeClass('hide').prepend('⬆️ ');
+  $('#masthead #nav a.'+tempParent2[1]).removeClass('hide').prepend('⬆️ ');
+
+  console.log(facetsPresent);
+
+  // amend parent menu links to inherit facets
+  if ((tempParent1[1] != 'emblorg') && (tempParent1[0] != 'null')) {
+    var tempHref = $('#masthead #nav a.'+tempParent2[1]).attr('href') + '&facet-parent-1=' + tempParent1[1];
+    $('#masthead #nav a.'+tempParent2[1]).attr('href',tempHref);
+    $('title').append(' < ' + facetIndex[tempParent1[0]][tempParent1[1]].title);
+  }
+  if ((tempParent2[1] != 'emblorg') && (tempParent2[0] != 'null')){
+    var tempHref = $('#masthead #nav a.'+tempParent1[1]).attr('href') + '&facet-parent-1=' + tempParent2[1];
+    $('#masthead #nav a.'+tempParent1[1]).attr('href',tempHref);
+    $('title').append(' < ' + facetIndex[tempParent2[0]][tempParent2[1]].title);
+  }
+
+  // activate the default navigation and make it relative to the active item
   function defaultNavEnable(target) {
     var target = $(target);
-    target.removeClass('hide').addClass('float-right').prepend('➡️ ');
-    var targetHref = target.attr('href') + '&facet-parent-1=' + tempParent1 + '&facet-parent-2=' + tempParent2;
+    if (facetsPresent.active == 'where:emblorg') {
+      target.removeClass('hide').addClass('float-right').prepend('⬇️ ');
+    } else {
+      target.removeClass('hide').addClass('float-right').prepend('↗️ ');
+    }
+    // if (tempActive[0] != 'null') {
+    //   var targetHref = target.attr('href') + '&facet-parent-1=' + tempActive[0] + ':' + tempActive[1];
+    // } else {
+    //   var targetHref = target.attr('href'); // keep it as it is
+    // }
+
+
+    if ((tempParent1[0] != 'null') && (tempParent2[0] != 'null')) {
+      var targetHref = target.attr('href') + '&facet-parent-1=' + tempParent1[0] + ':' + tempParent1[1] + '&facet-parent-2=' + tempParent2[1] + ':' + tempParent2[1];
+    } else if (tempParent1[0] != 'null') {
+      var targetHref = target.attr('href') + '&facet-parent-1=' + tempParent1[0] + ':' + tempParent1[1];
+    } else if (tempParent2[0] != 'null') {
+      var targetHref = target.attr('href') + '&facet-parent-1=' + tempParent2[0] + ':' + tempParent2[1];
+    } else {
+      var targetHref = target.attr('href'); // keep it as it is
+    }
     target.attr('href',targetHref);
   }
   defaultNavEnable('#masthead #nav a.research.hide');
@@ -186,7 +245,7 @@ function emblTagsNavigation() {
   defaultNavEnable('#masthead #nav a.people.hide');
   defaultNavEnable('#masthead #nav a.groups.hide');
   // emblorg doesn't inherit any parents
-  $('#masthead #nav a.emblorg.hide').removeClass('hide').addClass('float-right').prepend('⬆️ ');
+  $('#masthead #nav a.emblorg.hide').removeClass('hide').addClass('float-left').prepend('🏠 ');
 
 }
 
@@ -194,27 +253,30 @@ function emblTagsNavigation() {
  * As we don't have real pages, we show and hide content depending on the active facet
  */
 function emblTagsPageContent() {
+  var tempActiveType = facetsPresent.active.split(':')[0];
+  var tempActiveTerm = facetsPresent.active.split(':')[1];
+
   // prefer the highest level of specificity
   if ((facetsPresent['parent-1'] != '') && (facetsPresent['parent-2'] != '')) {
-    if ($('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']+'.'+facetsPresent['parent-2']).length > 0) {
-      $('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']+'.'+facetsPresent['parent-2']).first().removeClass('hide');
+    if ($('#content .active-'+tempActiveTerm+'-'+facetsPresent['parent-1'].split(':')[1]+'-'+facetsPresent['parent-2'].split(':')[1]).length > 0) {
+      $('#content .active-'+tempActiveTerm+'-'+facetsPresent['parent-1'].split(':')[1]+'-'+facetsPresent['parent-2'].split(':')[1]).first().removeClass('hide');
       return true;
     }
   }
   if (facetsPresent['parent-1'] != '') {
-    if ($('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']).length > 0) {
-      $('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']).first().removeClass('hide');
+    if ($('#content .active-'+tempActiveTerm+'-'+facetsPresent['parent-1'].split(':')[1]).length > 0) {
+      $('#content .active-'+tempActiveTerm+'-'+facetsPresent['parent-1'].split(':')[1]).first().removeClass('hide');
       return true;
     }
   }
   if (facetsPresent['parent-2'] != '') {
-    if ($('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-2']).length > 0) {
-      $('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-2']).first().removeClass('hide');
+    if ($('#content .active-'+tempActiveTerm+'-'+facetsPresent['parent-2'].split(':')[1]).length > 0) {
+      $('#content .active-'+tempActiveTerm+'-'+facetsPresent['parent-2'].split(':')[1]).first().removeClass('hide');
       return true;
     }
   }
-  if ($('#content .'+cleanString(facetsPresent.active)).length > 0) {
-    $('#content .'+cleanString(facetsPresent.active)).first().removeClass('hide');
+  if ($('#content .active-'+tempActiveTerm).length > 0) {
+    $('#content .active-'+tempActiveTerm).first().removeClass('hide');
     return true;
   }
 
@@ -232,8 +294,14 @@ function runPage() {
   // $(document).foundation();
 
   // build the default nav
-  $.each(facetIndex, function( index, value ) {
-    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="/?facet-active='+cleanString(index)+'">'+value.title+'</a>');
+  $.each(facetIndex.who, function( index, value ) {
+    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="/?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
+  });
+  $.each(facetIndex.what, function( index, value ) {
+    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="/?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
+  });
+  $.each(facetIndex.where, function( index, value ) {
+    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="/?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
   });
 
   emblTagsRead();

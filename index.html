@@ -18,7 +18,7 @@
         <a class="button emblorg where hide" href="/?facet-where=EMBL.org&facet-active=where">EMBL.org</a>
         <a class="button people who hide" href="/?facet-who=People&facet-active=who">People</a> -->
 
-        <a class="float-right button" href="/?facet-active=EMBL.org">
+        <a class="float-right button" href="/?facet-active=where:EMBL.org">
           <img class="hexagon" src="assets/logos/hexagon-mono-black.svg" />
         </a>
       </div>
@@ -37,28 +37,36 @@
       <div class="columns medium-8">
 
         <!-- where:EMBL.org -->
-        <div class="emblorg hide">
+        <div class="active-emblorg hide">
           <h2>About this</h2>
           <p>This prototype does not demonstrate design or general layout, but focuses on <strong>cross-silo</strong> navigation.</p>
+          <div class="callout medium-4 float-right">
+            <p>To illustrate:</p>
+            <img src="https://docs.google.com/drawings/d/e/2PACX-1vTdgKzPmz863mxb0a-IHeOYZFnvCel5h6BkL__oYgi0zB5Nm5WPOyt__eR7ucLbkdkNW_uhXy-viMrj/pub?w=219&amp;h=137">
+          </div>
           <p>That is, we show how it could feel to navigate not ⬆️⬇️ up-and-down a silo, but ⬅️➡️ across silos...
             <ul>
               <li>Research ➡️ Services
-              <li>People:Grenoble ➡️ People:Hinxton
+              <li><a href="/?facet-active=who:People&facet-parent-1=where:Grenoble">People:Grenoble</a> ➡️ People:EMBL or ➡️ Grenoble
               <li>and so on.
             </ul>
           </p>
+          <ul>
+            <li>This allows a "power user" scenario of context shifting; and
+            <li>allows context indication... content could surface to the user as both "<a href="/?facet-active=who:Cipriani%20Team&facet-parent-1=what:research&facet-parent-2=where:Grenoble">Cipriani Team:Research:Grenoble</a>" and "<a href="/?facet-active=who:Cipriani%20Team&facet-parent-1=what:research">Cipriani Team:Research</a>".
+          </ul>
           <div>
             <h3>⬇️ Descend into a silo</h3>
             <p>Note: these are major facets for testing major navigation paths from EMBL.org, we'd of course present these better/differently. <span class="strikethrough">strikethrough</span> options aren't implemented.</p>
             <div class=" medium-up-3 ">
               <div class="column">
                 <span class="label">⬇️ Who</span><br/>
-                <a href="/?facet-active=Groups&facet-parent-1=EMBL.org" class="">Groups</a>
-                <a href="/?facet-active=People&facet-parent-1=EMBL.org" class="">People</a>
+                <a href="/?facet-active=who:Groups&facet-parent-1=where:EMBL.org" class="">Groups</a>
+                <a href="/?facet-active=who:People&facet-parent-1=where:EMBL.org" class="">People</a>
               </div>
               <div class="column">
                 <span class="label">⬇️ What</span><br/>
-                <a href="/?facet-active=Research&facet-parent-1=EMBL.org" class="">Research</a>
+                <a href="/?facet-active=what:research&amp;facet-parent-1=where:EMBL.org" class="">Research</a>
                 <a href="#" class=" strikethrough">Services</a>
                 <a href="#" class=" strikethrough">Training</a>
                 <a href="#" class=" strikethrough">Technology Transfer</a>
@@ -70,7 +78,7 @@
                 <span class="label">⬇️ Where</span><br/>
                 <a href="#" class=" strikethrough">Heidelberg</a>
                 <a href="#" class=" strikethrough">Barcelona</a>
-                <a href="/?facet-active=Grenoble&facet-parent-1=EMBL.org" class="">Grenoble</a>
+                <a href="/?facet-active=where:Grenoble&facet-parent-1=where:EMBL.org" class="">Grenoble</a>
                 <a href="#" class=" strikethrough">Hamburg</a>
                 <a href="#" class=" strikethrough">Hinxton</a>
                 <a href="#" class=" strikethrough">Rome</a>
@@ -83,51 +91,70 @@
 
 
         <!-- what:Research -->
-        <div class="research hide">
+        <div class="active-research hide">
           <h2>EMBL: super-duper for Research</h2>
           <p>Some text about research at EMBL.</p>
 
           <p>
-            <span class="label">⬇️ Connect to a Research team, area, or person</span>
+            <span class="label">⬇️ Connect to Research at a site</span>
             <br/>
-            <a href="?facet-active=Cipriani Team&facet-parent-1=research" class="">Ciprian Team</a>
+            <a href="?facet-active=what:research&amp;facet-parent-1=where:grenoble" class="">Research at Grenoble</a>
+            <a href="#" class=" strikethrough">Research at X</a>
+            <a href="#" class=" strikethrough">Research at X</a>
+            <a href="#" class=" strikethrough">Research at X</a>
+            <a href="#" class=" strikethrough">Research at X</a>
+            <a href="#" class=" strikethrough">Research at X</a>
+          </p>
+
+          <p>
+            <span class="label">↘️ Connect to a Research team, area, or person</span>
+            <br/>
+            <a href="?facet-active=who:Cipriani Team&facet-parent-1=what:research" class="">Ciprian Team</a>
             <a href="#" class=" strikethrough">Team X</a>
             <a href="#" class=" strikethrough">Team X</a>
             <a href="#" class=" strikethrough">Team X</a>
             <a href="#" class=" strikethrough">Team X</a>
             <a href="#" class=" strikethrough">Team X</a>
           </p>
-
 
         </div>
 
         <!-- what:Grenoble-->
-        <div class="grenoble hide">
+        <div class="active-grenoble hide">
           <h2>Grenoble site</h2>
           <p>Some text about EMBL Grenoble.</p>
 
-          <p>
-            <span class="label">⬇️ Connect to a Research at Grenoble</span>
-            <br/>
-            <a href="/?facet-active=Research&facet-parent-1=Grenoble" class="">Research at Grenoble</a>
-          </p>
+          <h4>Facets within Grenoble</h4>
+
+          <ul>
+            <li><a href="/?facet-active=what:Research&facet-parent-1=where:Grenoble" class="">Research at Grenoble</a>
+            <li><a href="/?facet-active=who:People&facet-parent-1=where:Grenoble" class="">People at Grenoble</a>
+            <li>...
+          </ul>
+        </div>
+
+        <!-- who:People-->
+        <div class="active-people hide">
+          <h2>People listing</h2>
+          <p>List here.</p>
+
         </div>
 
         <!-- what:Research where:Grenoble-->
-        <div class="research grenoble hide">
+        <div class="active-research-grenoble hide">
           <h2>Welcome to Reseach at Grenoble</h2>
           <p>Some text about research at EMBL Grenoble.</p>
 
           <p>
             <span class="label">⬇️ Connect to a Research team, area, or person</span>
             <br/>
-            <a href="/?facet-active=Cipriani Team&facet-parent-1=research&facet-parent-2=Grenoble" class="">Ciprian Team</a>
+            <a href="/?facet-active=who:Cipriani Team&facet-parent-1=what:research&facet-parent-2=where:Grenoble" class="">Ciprian Team</a>
           </p>
         </div>
 
 
         <!-- who:Cipriani Team -->
-        <div class="ciprianiteam hide">
+        <div class="active-ciprianiteam hide">
           <div>
             <a href="#" class="button">Members</a>
             <a href="#" class="button">Publications</a>
@@ -147,7 +174,23 @@
 
         </div>
 
-        <!-- who:Cipriani Team -->
+        <!-- who:groups:research -->
+        <div class="active-groups-research hide">
+
+          <h2>Research groups</h2>
+          <p>Active is who:groups:research.</p>
+
+        </div>
+
+        <!-- who:groups -->
+        <div class="active-groups hide">
+
+          <h2>List of all EMBL groups</h2>
+          <p>Active is who:groups.</p>
+
+        </div>
+
+        <!-- fallback -->
         <div class="generic hide">
 
           <h2>🤔</h2>

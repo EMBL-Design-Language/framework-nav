@@ -60,6 +60,7 @@
 //  55. Top Bar
 //  56. Xy Grid
 
+@import '/node_modules/firacode/distr/fira_code.css';
 @import 'util/util';
 
 // 1. Global
@@ -82,7 +83,7 @@ $black: #0a0a0a;
 $white: #fefefe;
 $body-background: $white;
 $body-font-color: $black;
-$body-font-family: 'Fira Mono', Arial, sans-serif;
+$body-font-family: 'Fira Code', Courier, sans-serif;
 $body-antialiased: true;
 $global-margin: 1rem;
 $global-padding: 1rem;
@@ -132,7 +133,7 @@ $block-grid-max: 8;
 $header-font-family: $body-font-family;
 $header-font-weight: $global-weight-normal;
 $header-font-style: normal;
-$font-family-monospace: Consolas, 'Liberation Mono', Courier, monospace;
+$font-family-monospace: 'Fira Code', Consolas, 'Liberation Mono', Courier, monospace;
 $header-color: inherit;
 $header-lineheight: 1.4;
 $header-margin-bottom: 0.5rem;
