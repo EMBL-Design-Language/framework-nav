@@ -132,7 +132,8 @@ function emblTagsRead() {
 
 
   function readTag(processing) {
-    facetsPresent[processing] = getParameterByName('facet-'+processing);
+    facetsPresent[processing] = getParameterByName('facet-'+processing) || '';
+    facetsPresent[processing] = facetsPresent[processing].toLowerCase();
     target.append('&lt;meta name="embl:'+processing+'" content="'+facetsPresent[processing]+'" /&gt; <br/>');
     $('head').prepend('<meta name="embl:'+processing+'" content="'+facetsPresent[processing]+'">')
   }
@@ -149,32 +150,68 @@ function emblTagsRead() {
  * TODO: we're still using the URLs here, we should read in the metatags we've
  * written with JS
  */
-function loadMetatagsIntoContent() {
-  var tempActive = cleanString(facetsPresent.active || 'x');
-  var tempParent1 = cleanString(facetsPresent['parent-1'] || 'x');
-  var tempParent2 = cleanString(facetsPresent['parent-2'] || 'x');
+function emblTagsNavigation() {
+  var tempActive = cleanString(facetsPresent.active || 'null');
+  var tempParent1 = cleanString(facetsPresent['parent-1'] || 'null');
+  var tempParent2 = cleanString(facetsPresent['parent-2'] || 'null');
 
-  $('#masthead #nav .'+tempActive).removeClass('hide').append(' <small>(you are here)</small>');
-  $('#masthead #nav .'+tempParent1).removeClass('hide').prepend('⬆️ ');
-  $('#masthead #nav .'+tempParent2).removeClass('hide').prepend('⬆️ ');
+  $('h1#facet-active').html(facetIndex[tempActive].title);
+  $('title').html(facetIndex[tempActive].title);
 
-  $('h1#facet-active').html(facetsPresent.active);
-  $('title').html(facetsPresent.active);
+  $('#masthead #nav a.'+tempActive).removeClass('hide').append(' <small>(you are here)</small>');
+  $('#masthead #nav a.'+tempParent1).removeClass('hide').prepend('⬆️ ');
+  $('#masthead #nav a.'+tempParent2).removeClass('hide').prepend('⬆️ ');
+
+  // amend parents to inherit eachother
+  if ((tempParent1 != 'emblorg') && (tempParent1 != 'null')) {
+    var tempHref = $('#masthead #nav a.'+tempParent2).attr('href') + '&facet-parent-1=' + tempParent1;
+    $('#masthead #nav a.'+tempParent2).attr('href',tempHref);
+    $('title').append(' > ' + facetIndex[tempParent1].title);
+  }
+  if ((tempParent2 != 'emblorg') && (tempParent2 != 'null')){
+    var tempHref = $('#masthead #nav a.'+tempParent1).attr('href') + '&facet-parent-1=' + tempParent2;
+    $('#masthead #nav a.'+tempParent1).attr('href',tempHref);
+    $('title').append(' > ' + facetIndex[tempParent2].title);
+  }
+
+  // activate the default navigation and make it relative to parent-1 and parent-2
+  function defaultNavEnable(target) {
+    var target = $(target);
+    target.removeClass('hide').addClass('float-right').prepend('➡️ ');
+    var targetHref = target.attr('href') + '&facet-parent-1=' + tempParent1 + '&facet-parent-2=' + tempParent2;
+    target.attr('href',targetHref);
+  }
+  defaultNavEnable('#masthead #nav a.research.hide');
+  defaultNavEnable('#masthead #nav a.administration.hide');
+  defaultNavEnable('#masthead #nav a.people.hide');
+  defaultNavEnable('#masthead #nav a.groups.hide');
+  // emblorg doesn't inherit any parents
+  $('#masthead #nav a.emblorg.hide').removeClass('hide').addClass('float-right').prepend('⬆️ ');
 
 }
 
 /**
  * As we don't have real pages, we show and hide content depending on the active facet
  */
-function toggleContent() {
+function emblTagsPageContent() {
   // prefer the highest level of specificity
-  if ($('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']+'.'+facetsPresent['parent-2']).length > 0) {
-    $('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']+'.'+facetsPresent['parent-2']).first().removeClass('hide');
-    return true;
+  if ((facetsPresent['parent-1'] != '') && (facetsPresent['parent-2'] != '')) {
+    if ($('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']+'.'+facetsPresent['parent-2']).length > 0) {
+      $('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']+'.'+facetsPresent['parent-2']).first().removeClass('hide');
+      return true;
+    }
   }
-  if ($('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']).length > 0) {
-    $('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']).first().removeClass('hide');
-    return true;
+  if (facetsPresent['parent-1'] != '') {
+    if ($('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']).length > 0) {
+      $('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-1']).first().removeClass('hide');
+      return true;
+    }
+  }
+  if (facetsPresent['parent-2'] != '') {
+    if ($('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-2']).length > 0) {
+      $('#content .'+cleanString(facetsPresent.active)+'.'+facetsPresent['parent-2']).first().removeClass('hide');
+      return true;
+    }
   }
   if ($('#content .'+cleanString(facetsPresent.active)).length > 0) {
     $('#content .'+cleanString(facetsPresent.active)).first().removeClass('hide');
@@ -200,8 +237,8 @@ function runPage() {
   });
 
   emblTagsRead();
-  loadMetatagsIntoContent();
-  toggleContent();
+  emblTagsNavigation();
+  emblTagsPageContent();
 }
 
 

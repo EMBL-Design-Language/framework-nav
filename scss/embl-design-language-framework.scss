@@ -447,7 +447,7 @@ h1 {
 }
 
 .content {
-  padding-top: 1rem;
+  > .columns { padding-top: 1rem; }
 
   a {
     border-bottom: 1px dotted #888;
