@@ -10,14 +10,6 @@
   <body class="outline-divs">
     <div id="masthead" class="row masthead">
       <div id="nav" class="columns small-12">
-        <!-- <a id="facet-parent" class="button parent active" href="#">[parent]</a>
-        <a id="facet-parent2" class="button parent active" href="#">[parent]</a>
-        <a id="facet-parent3" class="button parent active" href="#">[parent]</a>
-
-        <a class="button research what hide" href="?facet-what=Research&facet-active=what">Research</a>
-        <a class="button emblorg where hide" href="?facet-where=EMBL.org&facet-active=where">EMBL.org</a>
-        <a class="button people who hide" href="?facet-who=People&facet-active=who">People</a> -->
-
         <a class="float-right button" href="?facet-active=where:EMBL.org">
           <img class="hexagon" src="assets/logos/hexagon-mono-black.svg" />
         </a>
@@ -28,9 +20,6 @@
       <div class="columns">
         <h1 id="facet-active" class="">Local masthead</h1>
       </div>
-      <!-- <div class="columns">
-        Section menu
-      </div> -->
     </div>
 
     <div id="content" class="row content">
@@ -47,13 +36,13 @@
           <p>That is, we show how it could feel to navigate not ⬆️⬇️ up-and-down a silo, but ⬅️➡️ across silos...
             <ul>
               <li>Research ➡️ Services
-              <li><a href="?facet-active=who:People&facet-parent-1=where:Grenoble">People:Grenoble</a> ➡️ People:EMBL or ➡️ Grenoble
+              <li><a href="?facet-active=who:People&amp;facet-parent-1=where:Grenoble">People:Grenoble</a> ➡️ People:EMBL or ➡️ Grenoble
               <li>and so on.
             </ul>
           </p>
           <ul>
             <li>This allows a "power user" scenario of context shifting; and
-            <li>allows context indication... content could surface to the user as both "<a href="?facet-active=who:Cipriani%20Team&facet-parent-1=what:research&facet-parent-2=where:Grenoble">Cipriani Team:Research:Grenoble</a>" and "<a href="?facet-active=who:Cipriani%20Team&facet-parent-1=what:research">Cipriani Team:Research</a>".
+            <li>allows context indication... content could surface to the user as both "<a href="?facet-active=who:Cipriani%20Team&amp;facet-parent-1=what:research&amp;facet-parent-2=where:Grenoble">Cipriani Team:Research:Grenoble</a>" and "<a href="?facet-active=who:Cipriani%20Team&amp;facet-parent-1=what:research">Cipriani Team:Research</a>".
           </ul>
           <div>
             <h3>⬇️ Descend into a silo</h3>
@@ -61,8 +50,8 @@
             <div class=" medium-up-3 ">
               <div class="column">
                 <span class="label">⬇️ Who</span><br/>
-                <a href="?facet-active=who:Groups&facet-parent-1=where:EMBL.org" class="">Groups</a>
-                <a href="?facet-active=who:People&facet-parent-1=where:EMBL.org" class="">People</a>
+                <a href="?facet-active=who:Groups&amp;facet-parent-1=where:EMBL.org" class="">Groups</a>
+                <a href="?facet-active=who:People&amp;facet-parent-1=where:EMBL.org" class="">People</a>
               </div>
               <div class="column">
                 <span class="label">⬇️ What</span><br/>
@@ -78,7 +67,7 @@
                 <span class="label">⬇️ Where</span><br/>
                 <a href="#" class=" strikethrough">Heidelberg</a>
                 <a href="#" class=" strikethrough">Barcelona</a>
-                <a href="?facet-active=where:Grenoble&facet-parent-1=where:EMBL.org" class="">Grenoble</a>
+                <a href="?facet-active=where:Grenoble&amp;facet-parent-1=where:EMBL.org" class="">Grenoble</a>
                 <a href="#" class=" strikethrough">Hamburg</a>
                 <a href="#" class=" strikethrough">Hinxton</a>
                 <a href="#" class=" strikethrough">Rome</a>
@@ -109,7 +98,7 @@
           <p>
             <span class="label">↘️ Connect to a Research team, area, or person</span>
             <br/>
-            <a href="?facet-active=who:Cipriani Team&facet-parent-1=what:research" class="">Ciprian Team</a>
+            <a href="?facet-active=who:Cipriani Team&amp;facet-parent-1=what:research" class="">Ciprian Team</a>
             <a href="#" class=" strikethrough">Team X</a>
             <a href="#" class=" strikethrough">Team X</a>
             <a href="#" class=" strikethrough">Team X</a>
@@ -127,8 +116,8 @@
           <h4>Facets within Grenoble</h4>
 
           <ul>
-            <li><a href="?facet-active=what:Research&facet-parent-1=where:Grenoble" class="">Research at Grenoble</a>
-            <li><a href="?facet-active=who:People&facet-parent-1=where:Grenoble" class="">People at Grenoble</a>
+            <li><a href="?facet-active=what:Research&amp;facet-parent-1=where:Grenoble" class="">Research at Grenoble</a>
+            <li><a href="?facet-active=who:People&amp;facet-parent-1=where:Grenoble" class="">People at Grenoble</a>
             <li>...
           </ul>
         </div>
@@ -148,7 +137,7 @@
           <p>
             <span class="label">⬇️ Connect to a Research team, area, or person</span>
             <br/>
-            <a href="?facet-active=who:Cipriani Team&facet-parent-1=what:research&facet-parent-2=where:Grenoble" class="">Ciprian Team</a>
+            <a href="?facet-active=who:Cipriani Team&amp;facet-parent-1=what:research&amp;facet-parent-2=where:Grenoble" class="">Ciprian Team</a>
           </p>
         </div>
 
