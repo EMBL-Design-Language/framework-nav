@@ -429,7 +429,18 @@ a.more {
 h1 {
   // text-transform: capitalize;
   letter-spacing: -2px;
+  
 
+}
+.local-masthead {
+  a.label {
+    margin-top: 2.5rem;
+    cursor: pointer;
+    &:hover {
+      color: #fff;
+      opacity: .7;
+    }
+  }
 }
 .masthead {
   .button {
@@ -462,6 +473,9 @@ h1 {
 .clear {
   clear: both;
 }
+
+.float-none { float: none !important; }
+.strong { font-weight: 800; }
 
 // outline layout divs
 .outline-divs div {
