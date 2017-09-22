@@ -81,6 +81,11 @@ var facetIndex = {
       'parent':'emblorg',
       'title':'Administration'
     },
+    'inspiration': {
+      'type':'what',
+      'parent':'emblorg',
+      'title':'Inspiration'
+    },
     'news': {
       'type':'what',
       'parent':'emblorg',
@@ -234,13 +239,8 @@ function emblTagsNavigation() {
     } else {
       target.removeClass('hide').addClass('float-right').prepend('↗️ ');
     }
-    // if (tempActive[0] != 'null') {
-    //   var targetHref = target.attr('href') + '&facet-parent-1=' + tempActive[0] + ':' + tempActive[1];
-    // } else {
-    //   var targetHref = target.attr('href'); // keep it as it is
-    // }
 
-
+    // inherit the active parent
     if ((tempParent1[0] != 'null') && (tempParent2[0] != 'null')) {
       var targetHref = target.attr('href') + '&facet-parent-1=' + tempParent1[0] + ':' + tempParent1[1] + '&facet-parent-2=' + tempParent2[1] + ':' + tempParent2[1];
     } else if (tempParent1[0] != 'null') {
@@ -255,7 +255,11 @@ function emblTagsNavigation() {
   defaultNavEnable('#masthead #nav a.research.hide');
   defaultNavEnable('#masthead #nav a.administration.hide');
   defaultNavEnable('#masthead #nav a.people.hide');
-  defaultNavEnable('#masthead #nav a.groups.hide');
+  defaultNavEnable('#masthead #nav a.inspiration.hide');
+  defaultNavEnable('#masthead #nav a.news.hide');
+  defaultNavEnable('#masthead #nav a.training.hide');
+  defaultNavEnable('#masthead #nav a.services.hide');
+  // defaultNavEnable('#masthead #nav a.groups.hide');
   // emblorg doesn't inherit any parents
   $('#masthead #nav a.emblorg.hide').removeClass('hide').addClass('float-left').prepend('🏠 ');
 }
