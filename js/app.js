@@ -214,22 +214,57 @@ function emblTagsNavigation() {
     $('#masthead #nav a.'+tempActive[1]).removeClass('hide').addClass('strong').append(' <small>(you are here)</small>');
   }
 
-  $('#masthead #nav a.'+tempParent1[1]).removeClass('hide').prepend('⬆️ ');
-  $('#masthead #nav a.'+tempParent2[1]).removeClass('hide').prepend('⬆️ ');
+  $('#masthead #nav > li > a.'+tempParent1[1]).removeClass('hide').prepend('⬆️ ');
+  $('#masthead #nav > li > a.'+tempParent2[1]).removeClass('hide').prepend('⬆️ ');
 
   //console.log(facetsPresent);
 
-  // amend parent menu links to inherit facets
-  if ((tempParent1[1] != 'emblorg') && (tempParent1[0] != 'null')) {
-    var tempHref = $('#masthead #nav a.'+tempParent2[1]).attr('href') + '&facet-parent-1=' + tempParent1[1];
-    $('#masthead #nav a.'+tempParent2[1]).attr('href',tempHref);
-    $('title').append(' < ' + facetIndex[tempParent1[0]][tempParent1[1]].title);
+  // amend global nav menu links to inherit facets
+
+  // where inherits active facets that aren't where
+  // @param {string} targetType the type of link we are appending to (who, what where)
+  function inheritFacets(targetType) {
+    var targetParentLevel = '&facet-parent-1=';
+    if (tempActive[0] != 'null' && tempActive[0] != targetType) {
+      $('#nav li  a.'+targetType).each( function( index, value ) {
+        // console.log(this);
+        var tempHref = $(this).attr('href') + targetParentLevel+tempActive[0]+':' + tempActive[1];
+        $(this).attr('href',tempHref);
+      });  
+      var targetParentLevel = '&facet-parent-2=';
+    }
+    if (tempParent1[0] != 'null' && tempParent1[0] != targetType) {
+      $('#nav li  a.'+targetType).each( function( index, value ) {
+        // console.log(this);
+        var tempHref = $(this).attr('href') + targetParentLevel+tempParent1[0]+':' + tempParent1[1];
+        $(this).attr('href',tempHref);
+      });  
+      var targetParentLevel = '&facet-parent-2=';
+    }
+    if (tempParent2[0] != 'null' && tempParent2[0] != targetType) {
+      $('#nav li  a.'+targetType).each( function( index, value ) {
+        // console.log(this);
+        var tempHref = $(this).attr('href') + targetParentLevel+tempParent2[0]+':' + tempParent2[1];
+        $(this).attr('href',tempHref);
+      });  
+    }
+   
   }
-  if ((tempParent2[1] != 'emblorg') && (tempParent2[0] != 'null')){
-    var tempHref = $('#masthead #nav a.'+tempParent1[1]).attr('href') + '&facet-parent-1=' + tempParent2[1];
-    $('#masthead #nav a.'+tempParent1[1]).attr('href',tempHref);
-    $('title').append(' < ' + facetIndex[tempParent2[0]][tempParent2[1]].title);
-  }
+
+  inheritFacets('where');
+  inheritFacets('who');
+  inheritFacets('what');
+  
+  // if ((tempParent1[1] != 'emblorg') && (tempParent1[0] != 'null')) {
+  //   var tempHref = $('#masthead #nav a.'+tempParent2[1]).attr('href') + '&facet-parent-1=' + tempParent1[1];
+  //   $('#masthead #nav a.'+tempParent2[1]).attr('href',tempHref);
+  //   $('title').append(' < ' + facetIndex[tempParent1[0]][tempParent1[1]].title);
+  // }
+  // if ((tempParent2[1] != 'emblorg') && (tempParent2[0] != 'null')){
+  //   var tempHref = $('#masthead #nav a.'+tempParent1[1]).attr('href') + '&facet-parent-1=' + tempParent2[1];
+  //   $('#masthead #nav a.'+tempParent1[1]).attr('href',tempHref);
+  //   $('title').append(' < ' + facetIndex[tempParent2[0]][tempParent2[1]].title);
+  // }
 
   // activate the default navigation and make it relative to the active item
   function defaultNavEnable(target) {
@@ -241,16 +276,16 @@ function emblTagsNavigation() {
     }
 
     // inherit the active parent
-    if ((tempParent1[0] != 'null') && (tempParent2[0] != 'null')) {
-      var targetHref = target.attr('href') + '&facet-parent-1=' + tempParent1[0] + ':' + tempParent1[1] + '&facet-parent-2=' + tempParent2[1] + ':' + tempParent2[1];
-    } else if (tempParent1[0] != 'null') {
-      var targetHref = target.attr('href') + '&facet-parent-1=' + tempParent1[0] + ':' + tempParent1[1];
-    } else if (tempParent2[0] != 'null') {
-      var targetHref = target.attr('href') + '&facet-parent-1=' + tempParent2[0] + ':' + tempParent2[1];
-    } else {
-      var targetHref = target.attr('href'); // keep it as it is
-    }
-    target.attr('href',targetHref);
+    // if ((tempParent1[0] != 'null') && (tempParent2[0] != 'null')) {
+    //   var targetHref = target.attr('href') + '&facet-parent-1=' + tempParent1[0] + ':' + tempParent1[1] + '&facet-parent-2=' + tempParent2[1] + ':' + tempParent2[1];
+    // } else if (tempParent1[0] != 'null') {
+    //   var targetHref = target.attr('href') + '&facet-parent-1=' + tempParent1[0] + ':' + tempParent1[1];
+    // } else if (tempParent2[0] != 'null') {
+    //   var targetHref = target.attr('href') + '&facet-parent-1=' + tempParent2[0] + ':' + tempParent2[1];
+    // } else {
+    //   var targetHref = target.attr('href'); // keep it as it is
+    // }
+    // target.attr('href',targetHref);
   }
   defaultNavEnable('#masthead #nav a.research.hide');
   defaultNavEnable('#masthead #nav a.administration.hide');
@@ -311,7 +346,20 @@ function runPage() {
     $('#masthead #nav').append('<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>');
   });
   $.each(facetIndex.where, function( index, value ) {
-    $('#masthead #nav').prepend('<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>');
+    var newMenuItem = "";
+    newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>';
+    newMenuItem += '<ul class="menu">';
+    newMenuItem += '<li><a class="" href="?facet-active=where:emblorg">All EMBL locations</a></li>';
+    $.each(facetIndex.where, function( index, value ) {
+      if (index != 'emblorg') {
+        newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+'" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>';        
+      }
+    });
+      
+    newMenuItem += '</ul>';
+    newMenuItem += '</li>';
+
+    $('#masthead #nav').prepend(newMenuItem);
   });
 
   // Read metatags per page and act accordingly
