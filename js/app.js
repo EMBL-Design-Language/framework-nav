@@ -1,8 +1,11 @@
+// we'll use this later to store what we've scanned from the URL or metatags
+var facetsPresent = {};
+
 // IA index
 // A simple array index of key=>type.
 //
 // See master list of values at
-// https://embl-design-language.github.io/Springboard/information-architecture/
+// https://embl-design-language.github.io/Springboard/information-architecture/#facet-structure-and-categories
 //
 // This might pone day be some sort of lookup API that maps a value to our IA
 // TODO: add a lookup by key function
@@ -36,15 +39,35 @@ var facetIndex = {
     },
   },
   'where':{
+    'barcelona': {
+      'type':'where',
+      'parent':'locations',
+      'title':'Barcelona'
+    },
     'grenoble': {
       'type':'where',
       'parent':'locations',
       'title':'Grenoble'
     },
+    'hamburg': {
+      'type':'where',
+      'parent':'locations',
+      'title':'Hamburg'
+    },
+    'hinxton': {
+      'type':'where',
+      'parent':'locations',
+      'title':'Hinxton'
+    },
     'heidelberg': {
       'type':'where',
       'parent':'locations',
       'title':'Heidelberg'
+    },
+    'rome': {
+      'type':'where',
+      'parent':'locations',
+      'title':'Rome'
     },
     'emblorg': {
       'type':'where',
@@ -67,12 +90,24 @@ var facetIndex = {
       'type':'what',
       'parent':'emblorg',
       'title':'Research'
+    },
+    'services': {
+      'type':'what',
+      'parent':'emblorg',
+      'title':'Services'
+    },
+    'training': {
+      'type':'what',
+      'parent':'emblorg',
+      'title':'Training'
     }
+  },
+  // allow a non-set state
+  'null': {
+    'null': 'null'
   }
 }
 
-// we'll use this later to store what we've scanned from the URL or metatags
-var facetsPresent = {};
 
 /**
  * Get URL paramater
@@ -148,22 +183,24 @@ function emblTagsRead() {
  * written with JS
  */
 function emblTagsNavigation() {
+  // Get active facets we detected on content (URL or page meta tags)
   var tempActive =  (facetsPresent.active || 'null:null').split(':');
   var tempParent1 = (facetsPresent['parent-1'] || 'null:null').split(':');
   var tempParent2 = (facetsPresent['parent-2'] || 'null:null').split(':');
 
-  // console.log(facetIndex[tempActive[0]][tempActive[1]]);
-
-  $('h1#facet-active').html(facetIndex[tempActive[0]][tempActive[1]].title);
-  $('title').html(facetIndex[tempActive[0]][tempActive[1]].title);
+  // See if we have a corresponding entry in our index
+  var facetActive = facetIndex[tempActive[0]][tempActive[1]] || "null:null";
+  var facetParent1 = facetIndex[tempParent1[0]][tempParent1[1]] || "null:null";
+  var facetParent2 = facetIndex[tempParent2[0]][tempParent2[1]] || "null:null";
+  
+  $('h1#facet-active').html(facetActive.title);
+  $('title').html(facetActive.title);
 
   if (tempParent1[1] != 'null') {
-    // $('<small> < ' + facetIndex[tempParent1[0]][tempParent1[1]].title+'</small>').appendTo($('title'));
-    $('h1#facet-active').append('<small> < ' + facetIndex[tempParent1[0]][tempParent1[1]].title + '</small>');
+    $('h1#facet-active').append('<small> < ' + facetParent1.title + '</small>');
   }
   if (tempParent2[1] != 'null') {
-    // $('<small> < ' + facetIndex[tempParent1[0]][tempParent1[1]].title+'</small>').appendTo($('title'));
-    $('h1#facet-active').append('<small> < ' + facetIndex[tempParent2[0]][tempParent2[1]].title + '</small>');
+    $('h1#facet-active').append('<small> < ' + facetParent2.title + '</small>');
   }
 
   if (tempParent1[1] != 'null' || tempParent2[1] != 'null') {
@@ -175,7 +212,7 @@ function emblTagsNavigation() {
   $('#masthead #nav a.'+tempParent1[1]).removeClass('hide').prepend('⬆️ ');
   $('#masthead #nav a.'+tempParent2[1]).removeClass('hide').prepend('⬆️ ');
 
-  console.log(facetsPresent);
+  //console.log(facetsPresent);
 
   // amend parent menu links to inherit facets
   if ((tempParent1[1] != 'emblorg') && (tempParent1[0] != 'null')) {
@@ -221,37 +258,36 @@ function emblTagsNavigation() {
   defaultNavEnable('#masthead #nav a.groups.hide');
   // emblorg doesn't inherit any parents
   $('#masthead #nav a.emblorg.hide').removeClass('hide').addClass('float-left').prepend('🏠 ');
-
 }
 
 /**
  * As we don't have real pages, we show and hide content depending on the active facet
  */
-function emblTagsPageContent() {
-  var tempActiveType = facetsPresent.active.split(':')[0];
-  var tempActiveTerm = facetsPresent.active.split(':')[1];
+function emblActiveContent() {
+  var facetType = facetsPresent.active.split(':')[0];
+  var facetTerm = facetsPresent.active.split(':')[1];
 
   // prefer the highest level of specificity
   if ((facetsPresent['parent-1'] != '') && (facetsPresent['parent-2'] != '')) {
-    if ($('#content .active-'+tempActiveTerm+'-'+facetsPresent['parent-1'].split(':')[1]+'-'+facetsPresent['parent-2'].split(':')[1]).length > 0) {
-      $('#content .active-'+tempActiveTerm+'-'+facetsPresent['parent-1'].split(':')[1]+'-'+facetsPresent['parent-2'].split(':')[1]).first().removeClass('hide');
+    if ($('#content .active-'+facetTerm+'-'+facetsPresent['parent-1'].split(':')[1]+'-'+facetsPresent['parent-2'].split(':')[1]).length > 0) {
+      $('#content .active-'+facetTerm+'-'+facetsPresent['parent-1'].split(':')[1]+'-'+facetsPresent['parent-2'].split(':')[1]).first().removeClass('hide');
       return true;
     }
   }
   if (facetsPresent['parent-1'] != '') {
-    if ($('#content .active-'+tempActiveTerm+'-'+facetsPresent['parent-1'].split(':')[1]).length > 0) {
-      $('#content .active-'+tempActiveTerm+'-'+facetsPresent['parent-1'].split(':')[1]).first().removeClass('hide');
+    if ($('#content .active-'+facetTerm+'-'+facetsPresent['parent-1'].split(':')[1]).length > 0) {
+      $('#content .active-'+facetTerm+'-'+facetsPresent['parent-1'].split(':')[1]).first().removeClass('hide');
       return true;
     }
   }
   if (facetsPresent['parent-2'] != '') {
-    if ($('#content .active-'+tempActiveTerm+'-'+facetsPresent['parent-2'].split(':')[1]).length > 0) {
-      $('#content .active-'+tempActiveTerm+'-'+facetsPresent['parent-2'].split(':')[1]).first().removeClass('hide');
+    if ($('#content .active-'+facetTerm+'-'+facetsPresent['parent-2'].split(':')[1]).length > 0) {
+      $('#content .active-'+facetTerm+'-'+facetsPresent['parent-2'].split(':')[1]).first().removeClass('hide');
       return true;
     }
   }
-  if ($('#content .active-'+tempActiveTerm).length > 0) {
-    $('#content .active-'+tempActiveTerm).first().removeClass('hide');
+  if ($('#content .active-'+facetTerm).length > 0) {
+    $('#content .active-'+facetTerm).first().removeClass('hide');
     return true;
   }
 
@@ -280,7 +316,7 @@ function runPage() {
   // Read metatags per page and act accordingly
   emblTagsRead();
   emblTagsNavigation();
-  emblTagsPageContent();
+  emblActiveContent();
 }
 
 runPage();
