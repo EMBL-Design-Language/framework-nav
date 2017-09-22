@@ -51,7 +51,6 @@ var facetIndex = {
       'parent':'locations',
       'title':'EMBL.org'
     }
-
   },
   'what': {
     'administration': {
@@ -70,7 +69,6 @@ var facetIndex = {
       'title':'Research'
     }
   }
-
 }
 
 // we'll use this later to store what we've scanned from the URL or metatags
@@ -109,31 +107,9 @@ function getParameterByName(name, url) {
 }
 
 /**
- * Indicate which metatags are currently active.
- * You just need a div with class 'metatag-readout'
- * This will also write the tags to the <head>
+ * toLowerCase and drop '.', ' '
+ * @param {string} val
  */
-function getContentTag(facet) {
-  // facet = facet.split('-')[1];
-  // if (getParameterByName('facet-active') == facet) {
-  //   return 'active';
-  // }
-  // if (getParameterByName('facet-parent') == facet) {
-  //   return 'parent';
-  // }
-  // // allow for multipe parents
-  // if (getParameterByName('facet-parent2') == facet) {
-  //   return 'parent';
-  // }
-  // if (getParameterByName('facet-parent3') == facet) {
-  //   return 'parent';
-  // }
-  // if (getParameterByName('facet-child') == facet) {
-  //   return 'child';
-  // }
-}
-
-// toLowerCase and drop '.', ' '
 function cleanString(val) {
   val = val || 'null:null';
   return val.replace(/\./g,'').replace(/ /g,'').toLowerCase();
@@ -163,7 +139,6 @@ function emblTagsRead() {
   readTag('active');
   readTag('parent-1');
   readTag('parent-2');
-
 }
 
 /**
@@ -282,18 +257,16 @@ function emblTagsPageContent() {
 
   // still here? load the generic content
   $('#content .generic').removeClass('hide');
-
 }
 
-
 /**
- * Do all of the above on page load
+ * Bootstrap our fake site
  */
 function runPage() {
   // Invoke generic foundation JS
   // $(document).foundation();
 
-  // build the default nav
+  // Add core navigation to the global masthead
   $.each(facetIndex.who, function( index, value ) {
     $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
   });
@@ -304,10 +277,10 @@ function runPage() {
     $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
   });
 
+  // Read metatags per page and act accordingly
   emblTagsRead();
   emblTagsNavigation();
   emblTagsPageContent();
 }
-
 
 runPage();
