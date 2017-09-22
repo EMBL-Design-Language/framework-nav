@@ -9,11 +9,19 @@
   </head>
   <body class="outline-divs">
     <div id="masthead" class="row masthead">
-      <div id="nav" class="columns small-12">
-        <a class="float-right button" href="?facet-active=where:EMBL.org">
-          <img class="hexagon" src="assets/logos/hexagon-mono-black.svg" />
-        </a>
-      </div>
+      <ul id="nav" class="float-left dropdown menu columns medium-12" data-dropdown-menu>
+        <li>
+          <a href="#">Item 1</a>
+          <ul class="menu">
+            <li><a href="#">Item 1A</a></li>
+          </ul>
+        </li>
+        <li class="float-right">
+          <a href="?facet-active=where:EMBL.org">
+            <img class="hexagon" src="assets/logos/hexagon-mono-black.svg" />
+          </a>
+        </li>
+      </ul>
     </div>
 
     <div id="local-masthead" class="row local-masthead">
@@ -116,6 +124,13 @@
         <div class="active-research hide">
           <h2>EMBL: super-duper for Research</h2>
           <p>Some text about research at EMBL.</p>
+          <p>
+            <span class="label">⬇️ Connect to a Research team, area, or person</span>
+            <br/>
+            <a href="?facet-active=who:Cipriani Team&amp;facet-parent-1=what:research" class="">Ciprian Team</a>
+            <a href="#" class=" strikethrough">Team X</a>
+            <a href="#" class=" strikethrough">Team X</a>
+          </p>
 
           <p>
             <span class="label">⬇️ Connect to Research at a site</span>
@@ -123,20 +138,6 @@
             <a href="?facet-active=what:research&amp;facet-parent-1=where:grenoble" class="">Research at Grenoble</a>
             <a href="#" class=" strikethrough">Research at X</a>
             <a href="#" class=" strikethrough">Research at X</a>
-            <a href="#" class=" strikethrough">Research at X</a>
-            <a href="#" class=" strikethrough">Research at X</a>
-            <a href="#" class=" strikethrough">Research at X</a>
-          </p>
-
-          <p>
-            <span class="label">↘️ Connect to a Research team, area, or person</span>
-            <br/>
-            <a href="?facet-active=who:Cipriani Team&amp;facet-parent-1=what:research" class="">Ciprian Team</a>
-            <a href="#" class=" strikethrough">Team X</a>
-            <a href="#" class=" strikethrough">Team X</a>
-            <a href="#" class=" strikethrough">Team X</a>
-            <a href="#" class=" strikethrough">Team X</a>
-            <a href="#" class=" strikethrough">Team X</a>
           </p>
 
         </div>
@@ -145,7 +146,6 @@
         <div class="active-grenoble hide">
           <h2>Grenoble site</h2>
           <p>Some text about EMBL Grenoble.</p>
-
           <h4>Facets within Grenoble</h4>
 
           <ul>
@@ -215,7 +215,7 @@
         <!-- fallback -->
         <div class="generic hide">
 
-          <h2>🤔</h2>
+          <h2>✍️</h2>
           <p>No content yet prepared for this facet combination. Remember this is juat a thin-skin prototype, the "real" version will be driven off content and not a flaky JS read of the URL bar.</p>
 
         </div>
@@ -242,7 +242,6 @@
         </p>
         <p>To illustrate:</p>
         <p><img src="https://docs.google.com/drawings/d/e/2PACX-1vTdgKzPmz863mxb0a-IHeOYZFnvCel5h6BkL__oYgi0zB5Nm5WPOyt__eR7ucLbkdkNW_uhXy-viMrj/pub?w=219&amp;h=137"></p>
-        <p>This allows a "power user" scenario of context shifting and allows context indication... content could surface to the user as both "<a href="?facet-active=who:Cipriani%20Team&amp;facet-parent-1=what:research&amp;facet-parent-2=where:Grenoble">Cipriani Team:Research:Grenoble</a>" and "<a href="?facet-active=who:Cipriani%20Team&amp;facet-parent-1=what:research">Cipriani Team:Research</a>".</p>
         <p>As this is contextual cross-silo navigation, it will not often appear in the main body content, but rather in the global header and footer navigation structures.</p>
       </div>
 
@@ -265,7 +264,7 @@
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <!-- <script src="bower_components/what-input/dist/what-input.js"></script> -->
-    <!-- <script src="bower_components/foundation-sites/dist/js/foundation.js"></script> -->
+    <script src="bower_components/foundation-sites/dist/js/foundation.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>

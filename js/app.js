@@ -237,7 +237,7 @@ function emblTagsNavigation() {
     if (facetsPresent.active == 'where:emblorg') {
       target.removeClass('hide').addClass('float-right').prepend('⬇️ ');
     } else {
-      target.removeClass('hide').addClass('float-right').prepend('↗️ ');
+      target.removeClass('hide').prepend('↗️ ').parent().addClass('float-right');
     }
 
     // inherit the active parent
@@ -303,24 +303,25 @@ function emblActiveContent() {
  * Bootstrap our fake site
  */
 function runPage() {
-  // Invoke generic foundation JS
-  // $(document).foundation();
-
   // Add core navigation to the global masthead
   $.each(facetIndex.who, function( index, value ) {
-    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
+    $('#masthead #nav').append('<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>');
   });
   $.each(facetIndex.what, function( index, value ) {
-    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
+    $('#masthead #nav').append('<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>');
   });
   $.each(facetIndex.where, function( index, value ) {
-    $('#masthead #nav').prepend('<a class="button '+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>');
+    $('#masthead #nav').prepend('<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>');
   });
 
   // Read metatags per page and act accordingly
   emblTagsRead();
   emblTagsNavigation();
   emblActiveContent();
+
+  // Invoke generic foundation JS
+  // We currently only use it for the contextual dropdown (which may not be the best way to do the context)
+  $(document).foundation();  
 }
 
 runPage();
