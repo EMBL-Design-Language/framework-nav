@@ -190,8 +190,7 @@ function createDropdownForFacet(facetType,targetTerm) {
   if (facetType == 'null') return false;
 
   $.each(facetIndex[facetType], function( index, value ) {
-    // $('#masthead #nav').append('<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>');
-    
+   
     var targetMenuItem = $('a.'+facetType+'.'+index+'.metatag-present');
 
     // only apply where the facet item is an active meta tag
@@ -223,12 +222,22 @@ function createDropdownForFacet(facetType,targetTerm) {
 // 1. Dropdown with pivot facets
 // 2. Clicking on the parent deactivates the tag
 function configureMenuForPresentMetatags(targetType,targetTerm) {
-  $('#masthead #nav > li > a.'+targetTerm).addClass('metatag-present strong').removeClass('hide').prepend('↖️ ️').parent().addClass('float-left');
+  var targetElement = $('#masthead #nav > li > a.'+targetTerm);
+  targetElement.addClass('metatag-present strong').removeClass('hide').prepend('↖️ ️').parent().addClass('float-left');
+
+  // For terms that are present, we act as breadcrumbs
+  // Remove the parent-1, parent-2
+  // var re = /facet-parent/gi;
+  // var currentHref = targetElement.attr('href');
+  // var newHref     = currentHref.replace(re, 'facet-disable-parent');
+  // console.log(currentHref,newHref);
+  // targetElement.attr('href',newHref);
+
   createDropdownForFacet(targetType,targetTerm);
   if (targetType == 'where') {
-    $('#masthead #nav > li > a.'+targetTerm).parent().addClass('float-left');      
+    targetElement.parent().addClass('float-left');      
   } else {
-    $('#masthead #nav > li > a.'+targetTerm).parent().addClass('float-none');      
+    targetElement.parent().addClass('float-none');      
   }
 }
 
@@ -275,6 +284,9 @@ function emblTagsNavigation() {
     var targetParentLevel = '&facet-parent-1=';
     if (tempActive[0] != 'null' && tempActive[0] != targetType) {
       $('#nav li  a.'+targetType).each( function( index, value ) {
+        if ($(this).hasClass('metatag-present')) {
+          return true; // present metatags should act as breadcrumbs
+        }
         var tempHref = $(this).attr('href') + targetParentLevel+tempActive[0]+':' + tempActive[1];
         $(this).attr('href',tempHref);
       });  
@@ -282,6 +294,9 @@ function emblTagsNavigation() {
     }
     if (tempParent1[0] != 'null' && tempParent1[0] != targetType) {
       $('#nav li  a.'+targetType).each( function( index, value ) {
+        if ($(this).hasClass('metatag-present')) {
+          return true; // present metatags should act as breadcrumbs
+        }
         var tempHref = $(this).attr('href') + targetParentLevel+tempParent1[0]+':' + tempParent1[1];
         $(this).attr('href',tempHref);
       });  
@@ -289,7 +304,10 @@ function emblTagsNavigation() {
     }
     if (tempParent2[0] != 'null' && tempParent2[0] != targetType) {
       $('#nav li  a.'+targetType).each( function( index, value ) {
-        var tempHref = $(this).attr('href') + targetParentLevel+tempParent2[0]+':' + tempParent2[1];
+        if ($(this).hasClass('metatag-present')) {
+          return true; // present metatags should act as breadcrumbs
+        }
+          var tempHref = $(this).attr('href') + targetParentLevel+tempParent2[0]+':' + tempParent2[1];
         $(this).attr('href',tempHref);
       });  
     } 
