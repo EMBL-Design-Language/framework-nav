@@ -1,3 +1,8 @@
+// NOTE 🍝
+// ------
+// This is a speghitti code example to explore the concept,
+// it would of course need redesign.
+
 // we'll use this later to store what we've scanned from the URL or metatags
 var facetsPresent = {};
 
@@ -208,10 +213,58 @@ function emblTagsNavigation() {
     $('h1#facet-active').parent().append('<a href="?facet-active='+facetsPresent['parent-2']+'" class="label"> ️️↖️ ' + facetParent2.title + '</a>');
   }
 
-  $('#masthead #nav a.'+tempActive[1]).removeClass('hide').addClass('strong').prepend('✖ ️').parent().addClass('float-left');
-  $('#masthead #nav > li > a.'+tempParent1[1]).removeClass('hide').prepend('✖ ️').parent().addClass('float-none');
-  $('#masthead #nav > li > a.'+tempParent2[1]).removeClass('hide').prepend('✖ ️').parent().addClass('float-none');
+  // add context-specific dropdown to particular menu items
+  function createDropdownForFacet(facetType) {
+    if (facetType == 'null') return false;
 
+    $.each(facetIndex[facetType], function( index, value ) {
+      // $('#masthead #nav').append('<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>');
+      
+      var targetMenuItem = $('a.'+facetType+'.'+index+'.metatag-present');
+
+      // only apply where the facet item is an active meta tag
+      if (targetMenuItem.length < 1) return true; // skip to next
+      if (targetMenuItem.length > 1) console.warn('There should only be one facet with: .' + facetType +'.'+index+'; proceeding anyways.');
+      // console.log(targetMenuItem.length,facetType,index);
+      
+      var newMenuItem = "";
+      
+      // newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>';
+      newMenuItem += '<ul class="menu">';
+      if (facetType == 'where') {
+        newMenuItem += '<li><a class="" href="?facet-active=where:emblorg">All EMBL locations</a></li>';        
+      }
+      $.each(facetIndex[facetType], function( index, value ) {
+        if (index != 'emblorg') {
+          newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+'" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>';        
+        }
+      });
+        
+      newMenuItem += '</ul>';
+      newMenuItem += '</li>';
+  
+      $(newMenuItem).insertAfter(targetMenuItem);
+    }); 
+  }
+
+  // metatags that are present on the page get special handling:
+  // 1. Dropdown with pivot facets
+  // 2. Clicking on the parent deactivates the tag
+  function configureMenuForPresentMetatags(targetType,targetTerm) {
+    $('#masthead #nav > li > a.'+targetTerm).addClass('metatag-present strong').removeClass('hide').prepend('✖ ️').parent().addClass('float-left');
+    createDropdownForFacet(targetType);
+    if (targetType == 'where') {
+      $('#masthead #nav > li > a.'+targetTerm).parent().addClass('float-left');      
+    } else {
+      $('#masthead #nav > li > a.'+targetTerm).parent().addClass('float-none');      
+    }
+  }
+
+  // Indicate active metatag facets
+  configureMenuForPresentMetatags(tempActive[0], tempActive[1] );
+  configureMenuForPresentMetatags(tempParent1[0],tempParent1[1]);
+  configureMenuForPresentMetatags(tempParent2[0],tempParent2[1]);
+  
   /**
    * Facets inherit active and parent facets.
    * We exclude inheritence of facets of the same type, that is:
@@ -260,7 +313,7 @@ function emblTagsNavigation() {
   defaultNavEnable('#masthead #nav a.services.hide');
   // defaultNavEnable('#masthead #nav a.groups.hide');
   // emblorg doesn't inherit any parents
-  if ((tempActive[0] != 'where') && (tempParent2[0] != 'where') && (tempParent2[0] != 'where'))
+  if ((tempActive[0] != 'where') && (tempParent1[0] != 'where') && (tempParent2[0] != 'where'))
     $('#masthead #nav a.emblorg.hide').removeClass('hide').addClass('float-left').prepend('🏠 ');
 }
 
@@ -311,21 +364,24 @@ function runPage() {
     $('#masthead #nav').append('<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>');
   });
   $.each(facetIndex.where, function( index, value ) {
-    var newMenuItem = "";
-    newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>';
-    newMenuItem += '<ul class="menu">';
-    newMenuItem += '<li><a class="" href="?facet-active=where:emblorg">All EMBL locations</a></li>';
-    $.each(facetIndex.where, function( index, value ) {
-      if (index != 'emblorg') {
-        newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+'" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>';        
-      }
-    });
-      
-    newMenuItem += '</ul>';
-    newMenuItem += '</li>';
-
-    $('#masthead #nav').prepend(newMenuItem);
+    $('#masthead #nav').append('<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>');
   });
+  // $.each(facetIndex.where, function( index, value ) {
+  //   var newMenuItem = "";
+  //   newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>';
+  //   newMenuItem += '<ul class="menu">';
+  //   newMenuItem += '<li><a class="" href="?facet-active=where:emblorg">All EMBL locations</a></li>';
+  //   $.each(facetIndex.where, function( index, value ) {
+  //     if (index != 'emblorg') {
+  //       newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+'" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>';        
+  //     }
+  //   });
+      
+  //   newMenuItem += '</ul>';
+  //   newMenuItem += '</li>';
+
+  //   $('#masthead #nav').prepend(newMenuItem);
+  // });
 
   // Read metatags per page and act accordingly
   emblTagsRead();
