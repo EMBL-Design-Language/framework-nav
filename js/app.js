@@ -186,8 +186,55 @@ function emblTagsRead() {
   readTag('parent-2');
 }
 
+// Add context-specific dropdown to particular menu items.
+function createDropdownForFacet(facetType) {
+  if (facetType == 'null') return false;
+
+  $.each(facetIndex[facetType], function( index, value ) {
+    // $('#masthead #nav').append('<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>');
+    
+    var targetMenuItem = $('a.'+facetType+'.'+index+'.metatag-present');
+
+    // only apply where the facet item is an active meta tag
+    if (targetMenuItem.length < 1) return true; // skip to next
+    if (targetMenuItem.length > 1) console.warn('There should only be one facet with: .' + facetType +'.'+index+'; proceeding anyways.');
+    // console.log(targetMenuItem.length,facetType,index);
+    
+    var newMenuItem = "";
+    
+    // newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>';
+    newMenuItem += '<ul class="menu">';
+    if (facetType == 'where') {
+      newMenuItem += '<li><a class="" href="?facet-active=where:emblorg">All EMBL locations</a></li>';        
+    }
+    $.each(facetIndex[facetType], function( index, value ) {
+      if (index != 'emblorg') {
+        newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+'" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>';        
+      }
+    });
+      
+    newMenuItem += '</ul>';
+    newMenuItem += '</li>';
+
+    $(newMenuItem).insertAfter(targetMenuItem);
+  }); 
+}
+
+// Metatags that are present on the page get special handling:
+// 1. Dropdown with pivot facets
+// 2. Clicking on the parent deactivates the tag
+function configureMenuForPresentMetatags(targetType,targetTerm) {
+  $('#masthead #nav > li > a.'+targetTerm).addClass('metatag-present strong').removeClass('hide').prepend('✖ ️').parent().addClass('float-left');
+  createDropdownForFacet(targetType);
+  if (targetType == 'where') {
+    $('#masthead #nav > li > a.'+targetTerm).parent().addClass('float-left');      
+  } else {
+    $('#masthead #nav > li > a.'+targetTerm).parent().addClass('float-none');      
+  }
+}
+
 /**
- * Read the meta tags from the page and populate navigation
+ * Read the meta tags from the page and populate navigation.
  *
  * TODO: we're still using the URLs here, we should read in the metatags we've
  * written with JS
@@ -213,52 +260,6 @@ function emblTagsNavigation() {
     $('h1#facet-active').parent().append('<a href="?facet-active='+facetsPresent['parent-2']+'" class="label"> ️️↖️ ' + facetParent2.title + '</a>');
   }
 
-  // add context-specific dropdown to particular menu items
-  function createDropdownForFacet(facetType) {
-    if (facetType == 'null') return false;
-
-    $.each(facetIndex[facetType], function( index, value ) {
-      // $('#masthead #nav').append('<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>');
-      
-      var targetMenuItem = $('a.'+facetType+'.'+index+'.metatag-present');
-
-      // only apply where the facet item is an active meta tag
-      if (targetMenuItem.length < 1) return true; // skip to next
-      if (targetMenuItem.length > 1) console.warn('There should only be one facet with: .' + facetType +'.'+index+'; proceeding anyways.');
-      // console.log(targetMenuItem.length,facetType,index);
-      
-      var newMenuItem = "";
-      
-      // newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>';
-      newMenuItem += '<ul class="menu">';
-      if (facetType == 'where') {
-        newMenuItem += '<li><a class="" href="?facet-active=where:emblorg">All EMBL locations</a></li>';        
-      }
-      $.each(facetIndex[facetType], function( index, value ) {
-        if (index != 'emblorg') {
-          newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+'" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>';        
-        }
-      });
-        
-      newMenuItem += '</ul>';
-      newMenuItem += '</li>';
-  
-      $(newMenuItem).insertAfter(targetMenuItem);
-    }); 
-  }
-
-  // metatags that are present on the page get special handling:
-  // 1. Dropdown with pivot facets
-  // 2. Clicking on the parent deactivates the tag
-  function configureMenuForPresentMetatags(targetType,targetTerm) {
-    $('#masthead #nav > li > a.'+targetTerm).addClass('metatag-present strong').removeClass('hide').prepend('✖ ️').parent().addClass('float-left');
-    createDropdownForFacet(targetType);
-    if (targetType == 'where') {
-      $('#masthead #nav > li > a.'+targetTerm).parent().addClass('float-left');      
-    } else {
-      $('#masthead #nav > li > a.'+targetTerm).parent().addClass('float-none');      
-    }
-  }
 
   // Indicate active metatag facets
   configureMenuForPresentMetatags(tempActive[0], tempActive[1] );
