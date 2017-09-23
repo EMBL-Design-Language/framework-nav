@@ -118,7 +118,6 @@ var facetIndex = {
   }
 }
 
-
 /**
  * Get URL paramater
  * We'll use this to synthesise a website with one page
@@ -260,7 +259,6 @@ function emblTagsNavigation() {
     $('h1#facet-active').parent().append('<a href="?facet-active='+facetsPresent['parent-2']+'" class="label"> ️️↖️ ' + facetParent2.title + '</a>');
   }
 
-
   // Indicate active metatag facets
   configureMenuForPresentMetatags(tempActive[0], tempActive[1] );
   configureMenuForPresentMetatags(tempParent1[0],tempParent1[1]);
@@ -367,22 +365,6 @@ function runPage() {
   $.each(facetIndex.where, function( index, value ) {
     $('#masthead #nav').append('<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>');
   });
-  // $.each(facetIndex.where, function( index, value ) {
-  //   var newMenuItem = "";
-  //   newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+' hide" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a>';
-  //   newMenuItem += '<ul class="menu">';
-  //   newMenuItem += '<li><a class="" href="?facet-active=where:emblorg">All EMBL locations</a></li>';
-  //   $.each(facetIndex.where, function( index, value ) {
-  //     if (index != 'emblorg') {
-  //       newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+'" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>';        
-  //     }
-  //   });
-      
-  //   newMenuItem += '</ul>';
-  //   newMenuItem += '</li>';
-
-  //   $('#masthead #nav').prepend(newMenuItem);
-  // });
 
   // Read metatags per page and act accordingly
   emblTagsRead();
