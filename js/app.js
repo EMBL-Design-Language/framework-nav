@@ -186,7 +186,7 @@ function emblTagsRead() {
 }
 
 // Add context-specific dropdown to particular menu items.
-function createDropdownForFacet(facetType) {
+function createDropdownForFacet(facetType,targetTerm) {
   if (facetType == 'null') return false;
 
   $.each(facetIndex[facetType], function( index, value ) {
@@ -207,8 +207,8 @@ function createDropdownForFacet(facetType) {
       newMenuItem += '<li><a class="" href="?facet-active=where:emblorg">All EMBL locations</a></li>';        
     }
     $.each(facetIndex[facetType], function( index, value ) {
-      if (index != 'emblorg') {
-        newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+'" href="?facet-active='+value.type+":"+index+'">'+value.title+'</a></li>';        
+      if ((index != 'emblorg') && (index != targetTerm)) { // we've already manually themed EMBL.org; and don't show the active term as an alternative to itself
+        newMenuItem += '<li><a class="'+value.type+' '+cleanString(index)+'" href="?facet-active='+value.type+":"+index+'">➡️ '+value.title+'</a></li>';        
       }
     });
       
@@ -223,8 +223,8 @@ function createDropdownForFacet(facetType) {
 // 1. Dropdown with pivot facets
 // 2. Clicking on the parent deactivates the tag
 function configureMenuForPresentMetatags(targetType,targetTerm) {
-  $('#masthead #nav > li > a.'+targetTerm).addClass('metatag-present strong').removeClass('hide').prepend('✖ ️').parent().addClass('float-left');
-  createDropdownForFacet(targetType);
+  $('#masthead #nav > li > a.'+targetTerm).addClass('metatag-present strong').removeClass('hide').prepend('↖️ ️').parent().addClass('float-left');
+  createDropdownForFacet(targetType,targetTerm);
   if (targetType == 'where') {
     $('#masthead #nav > li > a.'+targetTerm).parent().addClass('float-left');      
   } else {
